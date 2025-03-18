@@ -35,7 +35,7 @@ const EmailPass = () => {
           className="w-full max-w-lg h-[46px] rounded-md px-4 py-2.5 border border-[#5ED8F2] outline-none text-sm mb-17"
         />
         {/* Bouton Confirmer */}
-        <button
+        <button 
           className="w-[200px] h-[41px] rounded-full bg-[#FB7822] py-3 font-medium text-white text-sm"
         >
           Confirmer

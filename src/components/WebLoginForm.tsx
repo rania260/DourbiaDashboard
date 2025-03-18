@@ -201,7 +201,7 @@ export default function SignInForm() {
                   Se rappeler de moi
                 </label>
               </div>
-              <Link href="#" className="text-xs text-[#FA7921] hover:underline">Mot de passe oublié ?</Link>
+              <Link href="/email-page" className="text-xs text-[#FA7921] hover:underline">Mot de passe oublié ?</Link>
             </div>
             <div className="flex flex-col justify-center items-center mx-auto space-y-4">
               <button
