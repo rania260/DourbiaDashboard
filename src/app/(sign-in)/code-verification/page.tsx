@@ -7,14 +7,14 @@ const VerificationCode = () => {
   const [code, setCode] = useState<string[]>(new Array(6).fill(''));
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
-      {/* Cadre principal */}
+    <div className="flex justify-center items-center min-h-screen">
+      {/* Cadre principal avec bordure similaire */}
       <div
-        className="bg-white border border-gray-300 backdrop-blur-sm shadow-lg rounded-lg flex flex-col items-center"
+        className="bg-white rounded-xl shadow-lg flex flex-col items-center backdrop-blur-sm border border-gray-300"
         style={{
-          width: '527px',
+          width: '590px',
           height: '706px',
-          padding: '40px 60px'
+          padding: '20px 40px'
         }}
       >
         {/* Logo */}
@@ -23,16 +23,16 @@ const VerificationCode = () => {
           alt="Logo Societica"
           width={90}
           height={45}
-          className="mx-auto mb-14"
+          className="mx-auto mb-17"
         />
 
         {/* Titre */}
-        <h1 className="text-2xl text-[#FB7822] font-bold mb-8">
+        <h1 className="text-[30px] mb-14 text-[#FB7822] font-abeezee">
           Code de vérification
         </h1>
 
         {/* Texte descriptif */}
-        <p className="text-center text-[#474747] text-sm mb-12 leading-6">
+        <p className="text-center text-[15px] mb-14 opacity-100 text-[#474747] leading-6 font-abeezee">
           Nous avons envoyé un code à 6 chiffres,<br />
           Saisissez le code ci-dessous
         </p>
