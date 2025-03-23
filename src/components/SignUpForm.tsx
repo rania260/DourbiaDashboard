@@ -279,7 +279,7 @@ export default function SignUpForm() {
             <div className="flex justify-center mt-13">
               <Link
                 href="/sign-in"
-                className="text-[#002863] underline text-[17px] font-montserrat underline-offset-3"
+                className="text-[#002863] underline text-[17px] font-montserrat-light underline-offset-3"
               >
                 Vous avez déjà un compte?
               </Link>
