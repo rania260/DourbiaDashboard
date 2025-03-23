@@ -1,7 +1,9 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState } from "react";
+import InputField from "../InputField";
 
 const schema = z.object({
   username: z
@@ -15,175 +17,161 @@ const schema = z.object({
   phone: z.string().min(1, { message: "Le téléphone est requis !" }),
   country: z.string().min(1, { message: "Le pays est requis !" }),
   role: z.string().min(1, { message: "Le rôle est requis !" }),
-  region: z.string().min(1, { message: "La région est requise !" }), 
+  region: z.string().min(1, { message: "La région est requise !" }),
 });
+
+type Inputs = z.infer<typeof schema>;
 
 const UserForm = ({
   type,
   data,
+  onSuccess,
+  onCancel,
 }: {
   type: "create" | "update";
   data?: any;
+  onSuccess?: (newUser: any) => void;
+  onCancel?: () => void;
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<Inputs>({
     resolver: zodResolver(schema),
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const onSubmit = handleSubmit(async (formData) => {
-    setIsLoading(true);
-    setErrorMessage(null);
-  
-    const form = new FormData();
-    form.append("username", formData.username);
-    form.append("email", formData.email);
-    form.append("password", formData.password);
-    form.append("phone", formData.phone);
-    form.append("country", formData.country);
-    form.append("role", formData.role);
-    form.append("region", formData.region); 
-  
+    const token = localStorage.getItem("token");
+    
     try {
       const response = await fetch("http://localhost:8000/auth/create", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-        credentials: 'include',  
+        credentials: 'include',
+        body: JSON.stringify(formData)
       });
-  
+
       if (!response.ok) {
-        throw new Error("Erreur lors de la création de l'utilisateur");
+        const errorData = await response.json();
+        throw new Error(errorData?.message || "Erreur lors de la création de l'utilisateur");
       }
-  
+
       const result = await response.json();
-      console.log("Utilisateur créé avec succès", result);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message || "Une erreur est survenue");
-      } else {
-        setErrorMessage("Une erreur est survenue");
+      if (onSuccess) {
+        onSuccess(result);
       }
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      console.error("Erreur:", error);
     }
   });
 
   return (
-    <form className="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-lg" onSubmit={onSubmit}>
-      <h1 className="text-2xl font-semibold text-center text-blue-500">
-        {type === "create" ? "Créer un nouvel utilisateur" : "Mettre à jour l'utilisateur"}
-      </h1>
-
-      {/* Nom d'utilisateur */}
-      <div>
-        <label htmlFor="username" className="text-sm font-medium text-gray-700">Nom d'utilisateur</label>
-        <input
-          id="username"
-          type="text"
-          {...register("username")}
-          placeholder="Nom d'utilisateur"
-          className="mt-2 p-3 border border-gray-300 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    <form className="flex flex-col gap-8" onSubmit={onSubmit}>
+      <h1 className="text-xl font-semibold">
+        {type === "create" ? "Créer un nouvel utilisateur" : "Modifier l'utilisateur"}
+      </h1>      
+      <div className="flex justify-between flex-wrap gap-4">
+        <InputField
+          label="Nom d'utilisateur"
+          name="username"
+          defaultValue={data?.username}
+          register={register}
+          error={errors?.username}
         />
-        {errors.username && <p className="text-red-500 text-xs">{errors.username.message}</p>}
-      </div>
-
-      {/* Email */}
-      <div>
-        <label htmlFor="email" className="text-sm font-medium text-gray-700">Email</label>
-        <input
-          id="email"
-          type="email"
-          {...register("email")}
-          placeholder="Email"
-          className="mt-2 p-3 border border-gray-300 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <InputField
+          label="Email"
+          name="email"
+          defaultValue={data?.email}
+          register={register}
+          error={errors?.email}
         />
-        {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
-      </div>
-
-      {/* Mot de passe */}
-      <div>
-        <label htmlFor="password" className="text-sm font-medium text-gray-700">Mot de passe</label>
-        <input
-          id="password"
+        <InputField
+          label="Mot de passe"
+          name="password"
           type="password"
-          {...register("password")}
-          placeholder="Mot de passe"
-          className="mt-2 p-3 border border-gray-300 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          defaultValue={data?.password}
+          register={register}
+          error={errors?.password}
         />
-        {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
       </div>
 
-      {/* Téléphone */}
-      <div>
-        <label htmlFor="phone" className="text-sm font-medium text-gray-700">Téléphone</label>
-        <input
-          id="phone"
-          type="text"
-          {...register("phone")}
-          placeholder="Téléphone"
-          className="mt-2 p-3 border border-gray-300 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <div className="flex justify-between flex-wrap gap-4">
+        <InputField
+          label="Téléphone"
+          name="phone"
+          defaultValue={data?.phone}
+          register={register}
+          error={errors?.phone}
         />
-        {errors.phone && <p className="text-red-500 text-xs">{errors.phone.message}</p>}
-      </div>
-
-      {/* Pays */}
-      <div>
-        <label htmlFor="country" className="text-sm font-medium text-gray-700">Pays</label>
-        <input
-          id="country"
-          type="text"
-          {...register("country")}
-          placeholder="Pays"
-          className="mt-2 p-3 border border-gray-300 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <InputField
+          label="Pays"
+          name="country"
+          defaultValue={data?.country}
+          register={register}
+          error={errors?.country}
         />
-        {errors.country && <p className="text-red-500 text-xs">{errors.country.message}</p>}
-      </div>
-
-      {/* Région */}
-      <div>
-        <label htmlFor="region" className="text-sm font-medium text-gray-700">Région</label>
-        <input
-          id="region"
-          type="text"
-          {...register("region")}
-          placeholder="Région"
-          className="mt-2 p-3 border border-gray-300 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <InputField
+          label="Région"
+          name="region"
+          defaultValue={data?.region}
+          register={register}
+          error={errors?.region}
         />
-        {errors.region && <p className="text-red-500 text-xs">{errors.region.message}</p>}
+        
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Rôle</label>
+          <div className="relative">
+            <select
+              className="appearance-none w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent cursor-pointer"
+              {...register("role")}
+              defaultValue={data?.role}
+            >
+              <option value="" className="text-gray-400">Sélectionner un rôle</option>
+              <option value="user" className="py-2">Utilisateur</option>
+              <option value="admin" className="py-2">Administrateur</option>
+              <option value="expert" className="py-2">Expert</option>
+              <option value="partenaire" className="py-2">Partenaire</option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <svg 
+                className="w-4 h-4 text-gray-400" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth="2" 
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
+          {errors.role?.message && (
+            <p className="text-xs text-red-400 mt-1">{errors.role.message}</p>
+          )}
+        </div>
       </div>
 
-      {/* Rôle */}
-      <div>
-        <label htmlFor="role" className="text-sm font-medium text-gray-700">Rôle</label>
-        <select
-          id="role"
-          {...register("role")}
-          className="mt-2 p-3 border border-gray-300 rounded-md w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Sélectionner un rôle</option>
-          <option value="user">Utilisateur</option>
-          <option value="admin">Administrateur</option>
-          <option value="expert">Expert</option>
-          <option value="partenaire">Partenaire</option>
-        </select>
-        {errors.role && <p className="text-red-500 text-xs">{errors.role.message}</p>}
+      <div className="flex gap-2 justify-end">
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-100"
+          >
+            Annuler
+          </button>
+        )}
+        <button className="bg-blue-400 text-white px-4 py-2 rounded-md hover:bg-blue-500">
+          {type === "create" ? "Créer" : "Modifier"}
+        </button>
       </div>
-
-      {errorMessage && <p className="text-red-500 text-xs text-center">{errorMessage}</p>}
-
-      <button
-        className="bg-blue-500 text-white p-3 rounded-md mt-4"
-        disabled={isLoading}
-      >
-        {isLoading ? "Création en cours..." : type === "create" ? "Créer" : "Mettre à jour"}
-      </button>
     </form>
   );
 };

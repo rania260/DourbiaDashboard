@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=ABeeZee&display=swap');
-
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
@@ -9,6 +8,27 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+
+.font-abeezee {
+  font-family: 'ABeeZee', sans-serif;
+}
+.font-actor {
+  font-family: 'Actor', sans-serif;
+}
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+.font-montserrat-light {
+  font-family: var(--font-montserrat-light), sans-serif;
+  font-weight: 300;
+}
+
+.font-montserrat-semibold {
+  font-family: var(--font-montserrat-semibold), sans-serif;
+  font-weight: 600;
+}
+
+
 .react-calendar {
   width: 100% !important;
   border: none !important;
@@ -241,3 +261,4 @@
 .custom-input-container input:focus {
   box-shadow: 0 5px 20px rgba(96, 216, 244, 0.15) !important;
 }
+

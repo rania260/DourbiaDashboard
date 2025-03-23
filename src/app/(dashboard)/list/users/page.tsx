@@ -117,6 +117,11 @@ const UsersList = () => {
         <td>
           <div className="flex items-center gap-2">
             <Link href={`/list/users/${item.id}`}>
+              <button className="w-7 h-7 flex items-center justify-center rounded-full bg-[#c3ebfa]">
+                <Image src="/view.png" alt="" width={16} height={16} />
+              </button>
+            </Link>
+            <Link href={`/list/users/${item.id}`}>
               <button className="w-7 h-7 flex items-center justify-center rounded-full bg-orange-200">
                 <Image src="/edit.png" alt="" width={16} height={16} />
               </button>

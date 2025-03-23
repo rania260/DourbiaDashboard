@@ -1,6 +1,4 @@
 "use client";
-
-// import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
 import UserForm from "./forms/UserForm";
@@ -27,9 +25,11 @@ const FormModal = ({
 }) => {
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
-    type === "create"
+    type === "create" 
       ? "bg-[#c3ebfa]"
       : type === "update"
+      ? "bg-[#c3ebfa]"
+      : type === "delete"
       ? "bg-[#c3ebfa]"
       : "bg-orange";
 
