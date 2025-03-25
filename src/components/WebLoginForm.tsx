@@ -33,8 +33,6 @@ export default function SignInForm() {
     setErrorMessage("");
 
     try {
-      console.log("Tentative de connexion avec:", { email, password });
-
       const response = await fetch("http://localhost:8000/auth/signin", {
         method: "POST",
         headers: {
@@ -44,12 +42,14 @@ export default function SignInForm() {
       });
 
       const data = await response.json();
-      console.log("Réponse du serveur:", data);
 
       if (response.ok) {
-        console.log("Token reçu:", data.token);
         localStorage.setItem("token", data.token);
-        console.log("Token sauvegardé:", localStorage.getItem("token"));
+        localStorage.setItem("user", JSON.stringify({
+          username: data.user.username,
+          role: data.user.role
+        }));
+        
         router.push("/admin");
       } else {
         setErrorMessage(data.message || "Identifiants incorrects.");

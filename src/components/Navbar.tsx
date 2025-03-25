@@ -1,6 +1,29 @@
+"use client";
+import { useEffect, useState } from 'react';
 import Image from "next/image"
 
 const Navbar = () => {
+  const [userData, setUserData] = useState({ username: '', role: '' });
+
+  useEffect(() => {
+    const userStr = localStorage.getItem('user');
+    console.log("Données utilisateur récupérées:", userStr);
+    
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        console.log("Données parsées:", user);
+        
+        setUserData({
+          username: user.username,
+          role: user.role
+        });
+      } catch (error) {
+        console.error("Erreur lors du parsing:", error);
+      }
+    }
+  }, []);
+
   return (
     <div className='flex items-center justify-between p-4'>
       {/* SEARCH BAR */}
@@ -18,8 +41,12 @@ const Navbar = () => {
           <div className='absolute -top-3 -right-3 w-5 h-5 flex items-center justify-center bg-orange-500 text-white rounded-full text-xs'>1</div>
         </div>
         <div className='flex flex-col'>
-          <span className="text-xs leading-3 font-medium">Ines Hassoumi</span>
-          <span className="text-[10px] text-gray-500 text-right">Admin</span>
+          <span className="text-xs leading-3 font-medium">
+            {userData.username || 'Chargement...'}
+          </span>
+          <span className="text-[10px] text-gray-500 text-right">
+            {userData.role || 'Chargement...'}
+          </span>
         </div>
         <Image src="/avatar.jpeg" alt="" width={36} height={36} className="rounded-full"/>
       </div>

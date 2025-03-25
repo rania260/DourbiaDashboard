@@ -46,13 +46,11 @@ export default function VerificationForm() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/auth/verify/${otp}`, {
+            const response = await fetch(`http://localhost:8000/auth/verify-email/${otp}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-
-                },
-                body: JSON.stringify({ email }),
+                }
             });
 
             const data = await response.json();
@@ -62,7 +60,7 @@ export default function VerificationForm() {
             }
 
             localStorage.removeItem("signupEmail");
-            router.push("/sign-in?verified=1");
+            router.push("/");
         } catch (err) {
             setError(err instanceof Error ? err.message : "Une erreur inconnue est survenue");
         } finally {

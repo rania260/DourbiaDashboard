@@ -6,6 +6,7 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import Image from "next/image";
 import Link from "next/link";
+import ViewUserModal from "@/components/ViewUserModal";
 
 type User = {
   id: number;
@@ -17,6 +18,7 @@ type User = {
   region: string;
   country: string;
   emailVerifiedAt?: string;
+  isBanned: boolean;
 };
 
 const columns = [
@@ -54,6 +56,10 @@ const columns = [
     accessor: "verification",
   },
   {
+    header: "Statut", 
+    accessor: "status",
+  },
+  {
     header: "Actions", 
     accessor: "action",
   },
@@ -62,6 +68,7 @@ const columns = [
 const UsersList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const fetchUsers = async () => {
     try {
@@ -73,7 +80,8 @@ const UsersList = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setUsers(data);
+        const sortedData = [...data].sort((a, b) => a.id - b.id);
+        setUsers(sortedData);
       } else {
         console.error('Failed to fetch users');
       }
@@ -93,8 +101,12 @@ const UsersList = () => {
       ? `Oui, ${new Date(item.emailVerifiedAt).toLocaleDateString("fr-FR")}`
       : "Non";
 
+    const rowClassName = item.isBanned 
+      ? "border-b border-gray-200 even:bg-slate-50 text-sm text-[#8F8F8F]" 
+      : "border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-orange-200";
+
     return (
-      <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-orange-200">
+      <tr key={item.id} className={rowClassName}>
         <td className="flex items-center gap-4 p-4">
           <Image
             src={item.avatar}
@@ -113,20 +125,33 @@ const UsersList = () => {
         <td className="hidden md:table-cell">{item.phone}</td>
         <td className="hidden md:table-cell">{item.country}</td>
         <td className="hidden md:table-cell">{item.region}</td>
-        <td>{verification}</td> 
+        <td>{verification}</td>
+        <td>
+          <span className={`px-2 py-1 rounded-full text-xs ${
+            item.isBanned 
+              ? "bg-red-100 text-red-800" 
+              : "bg-green-100 text-green-800"
+          }`}>
+            {item.isBanned ? "Banni" : "Actif"}
+          </span>
+        </td>
         <td>
           <div className="flex items-center gap-2">
-            <Link href={`/list/users/${item.id}`}>
-              <button className="w-7 h-7 flex items-center justify-center rounded-full bg-[#c3ebfa]">
-                <Image src="/view.png" alt="" width={16} height={16} />
-              </button>
-            </Link>
-            <Link href={`/list/users/${item.id}`}>
-              <button className="w-7 h-7 flex items-center justify-center rounded-full bg-orange-200">
-                <Image src="/edit.png" alt="" width={16} height={16} />
-              </button>
-            </Link>
-            <FormModal table="users" type="delete" id={item.id} />
+            <button 
+              className="w-7 h-7 flex items-center justify-center rounded-full bg-[#c3ebfa]"
+              onClick={() => setSelectedUser(item)}
+            >
+              <Image src="/view.png" alt="" width={16} height={16} />
+            </button>
+            <FormModal 
+              table="users" 
+              type="edit" 
+              id={item.id} 
+              data={item} 
+              onSuccess={fetchUsers} 
+            />
+            <FormModal table="users" type="ban" id={item.id} isBanned={item.isBanned} onSuccess={fetchUsers} />
+            <FormModal table="users" type="delete" id={item.id} onSuccess={fetchUsers} />
           </div>
         </td>
       </tr>
@@ -134,32 +159,42 @@ const UsersList = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      {/* TOP */}
-      <div className="flex items-center justify-between">
-        <h1 className="hidden md:block text-lg font-semibold">Tous les utilisateurs</h1>
-        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-          <TableSearch />
-          <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-orange-200">
-              <Image src="/filter.png" alt="" width={14} height={14} />
-            </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-orange-200">
-              <Image src="/sort.png" alt="" width={14} height={14} />
-            </button>
-            <FormModal table="users" type="create" />
+    <>
+      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+        {/* TOP */}
+        <div className="flex items-center justify-between">
+          <h1 className="hidden md:block text-lg font-semibold">Tous les utilisateurs</h1>
+          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+            <TableSearch />
+            <div className="flex items-center gap-4 self-end">
+              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-orange-200">
+                <Image src="/filter.png" alt="" width={14} height={14} />
+              </button>
+              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-orange-200">
+                <Image src="/sort.png" alt="" width={14} height={14} />
+              </button>
+              <FormModal table="users" type="create" onSuccess={fetchUsers} />
+            </div>
           </div>
         </div>
+        {/* LIST */}
+        {loading ? (
+          <div>Chargement...</div>
+        ) : (
+          <Table columns={columns} renderRow={renderRow} data={users} />
+        )}
+        {/* PAGINATION */}
+        <Pagination />
       </div>
-      {/* LIST */}
-      {loading ? (
-        <div>Chargement...</div>
-      ) : (
-        <Table columns={columns} renderRow={renderRow} data={users} />
+      
+      {/* Modal de visualisation */}
+      {selectedUser && (
+        <ViewUserModal 
+          user={selectedUser} 
+          onClose={() => setSelectedUser(null)} 
+        />
       )}
-      {/* PAGINATION */}
-      <Pagination />
-    </div>
+    </>
   );
 };
 

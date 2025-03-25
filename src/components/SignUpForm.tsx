@@ -225,43 +225,29 @@ export default function SignUpForm() {
                 )}
               </div>
 
-              {/* Checkbox Conditions */}
-              <div className="flex items-center gap-2 mt-[60px] ml-[40px]">
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    checked={acceptedTerms}
-                    onChange={(e) => setAcceptedTerms(e.target.checked)}
-                    className="opacity-0 absolute peer"
-                    id="terms"
-                    required
-                  />
-                  <div className="h-[25px] w-[25px] border-[1px] border-[#777272] rounded-md 
-      peer-checked:bg-[#E0E0E0] peer-checked:border-[#E0E0E0] transition-colors duration-200 flex items-center justify-center">
-                    {/* Checkmark icon (gris) */}
-                    <svg
-                      className="hidden peer-checked:block text-[#777272] w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <label htmlFor="terms" className="text-[15px] font-actor text-[#777272] leading-[1.5] mt-[-10px]">
-                  J'accepte les{" "}
-                  <Link href="#" className="text-[#FB7822] underline underline-offset-4">
-                    conditions d'utilisation
-                  </Link>{" "}
-                  de Dourbia
-                </label>
-              </div>
+{/* Checkbox Conditions */}
+<div className="flex items-center gap-2 mt-[60px] ml-[40px]">
+  <input
+    type="checkbox"
+    checked={acceptedTerms}
+    onChange={(e) => setAcceptedTerms(e.target.checked)}
+    className="h-[25px] w-[25px] border-[2px] border-[#777272] rounded-md 
+               text-blue-500 focus:ring-0 checked:bg-[#5ED8F2] checked:border-[#5ED8F2] 
+               checked:after:content-['✔'] checked:after:text-white 
+               checked:after:flex checked:after:items-center checked:after:justify-center
+               checked:after:h-full checked:after:w-full checked:after:font-bold text-center"
+    id="terms"
+    required
+  />
+  <label htmlFor="terms" className="text-[15px] font-actor text-[#777272] leading-[1.5] mt-[-10px]">
+    J'accepte les{" "}
+    <Link href="#" className="text-[#FB7822] underline underline-offset-4">
+      conditions d'utilisation
+    </Link>{" "}
+    de Dourbia
+  </label>
+</div>
+
             </div>
 
 
