@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import "../style/register.css";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -56,220 +56,204 @@ export default function SignUpForm() {
   };
 
   return (
-    <main className="min-h-screen bg-white grid grid-cols-[1fr_auto_1fr] items-stretch overflow-hidden">
+    <main className="main-container">
       {/* Partie Gauche - Image */}
-      <div className="relative border border-gray-300 backdrop-blur-sm shadow-lg rounded-r-[20px] overflow-hidden">
-        <div className="w-full h-full relative">
+      <div className="left-panel">
+        <div className="image-container">
           <Image
             src="/SignupImage.png"
             alt="Background Dourbia"
             layout="fill"
             objectFit="cover"
-            className="w-full h-full"
+            className="background-image"
           />
-          <div className="absolute inset-0 bg-black/20 h-full p-8">
-            <div className="absolute left-[164px] top-[93px]">
+          <div className="overlay">
+            <div className="logo-position">
               <Image
                 src="/logo1.png"
                 alt="Logo Dourbia"
                 width={340}
                 height={210}
+                className="main-logo"
               />
             </div>
-            <h1 className="absolute left-[177px] top-[380px] text-[55px] font-extrabold text-white leading-[85px]">
+            <h1 className="title-text">
               BIENVENUE À <br />
               <span>DOURBIA</span>
             </h1>
           </div>
         </div>
       </div>
-      <div className="w-20"></div>
+
+      <div className="spacer"></div>
 
       {/* Partie Droite - Formulaire */}
-      <div className="relative flex justify-center items-center border border-gray-300 backdrop-blur-sm shadow-lg rounded-l-[20px] overflow-hidden">
-        <div className="w-full max-w-md px-4 py-8 pt-8 pb-8 flex flex-col items-center">
-          <Image
-            src="/logo3.png"
-            alt="Logo Dourbia"
-            width={90}
-            height={80}
-            className="absolute top-[15px]"
-          />
-
-          <h2 className="relative top-4 text-[20px] text-[#60D8F4] mb-5 mt-10 font-actor text-center">
-            Créer un compte
-          </h2>
-
-
-          <form onSubmit={handleSubmit} className="w-full space-y-1">
-            <div className="space-y-3">
-              {/* Champ Nom complet */}
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder=""
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-                  required
-                />
-                {!fullName && (
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-                    <span className="text-[#8F8F8F] text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto">Nom et prénom</span>
-                    <span className="text-[#FB7822] ml-1">*</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Champ Email */}
-              <div className="relative">
-                <input
-                  type="email"
-                  placeholder=""
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-                  required
-                />
-                {!email && (
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-                    <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Adresse e-mail</span>
-                    <span className="text-[#FB7822] ml-1">*</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Champ Mot de passe */}
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder=""
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 pr-10 focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-                  required
-                />
-                {!password && (
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-                    <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Mot de passe</span>
-                    <span className="text-[#FB7822] ml-1">*</span>
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-
-              {/* Champ Confirmation Mot de passe */}
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder=""
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 pr-10 focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-                  required
-                />
-                {!confirmPassword && (
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-                    <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Confirmer mot de passe</span>
-                    <span className="text-[#FB7822] ml-1">*</span>
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-                >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-
-              {/* Champ Pays */}
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder=""
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-                  required
-                />
-                {!country && (
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-                    <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Pays</span>
-
-                  </div>
-                )}
-              </div>
-
-              {/* Champ Région */}
-              <div className="relative mb-[20px]"> {/* Ajout d'un margin-bottom pour l'espacement */}
-                <input
-                  type="text"
-                  placeholder=""
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 
-      focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-                  required
-                />
-                {!region && (
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-                    <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Région</span>
-                  </div>
-                )}
-              </div>
-
-{/* Checkbox Conditions */}
-<div className="flex items-center gap-2 mt-[60px] ml-[40px]">
-  <input
-    type="checkbox"
-    checked={acceptedTerms}
-    onChange={(e) => setAcceptedTerms(e.target.checked)}
-    className="h-[25px] w-[25px] border-[2px] border-[#777272] rounded-md 
-               text-blue-500 focus:ring-0 checked:bg-[#5ED8F2] checked:border-[#5ED8F2] 
-               checked:after:content-['✔'] checked:after:text-white 
-               checked:after:flex checked:after:items-center checked:after:justify-center
-               checked:after:h-full checked:after:w-full checked:after:font-bold text-center"
-    id="terms"
-    required
-  />
-  <label htmlFor="terms" className="text-[15px] font-actor text-[#777272] leading-[1.5] mt-[-10px]">
-    J'accepte les{" "}
-    <Link href="#" className="text-[#FB7822] underline underline-offset-4">
-      conditions d'utilisation
-    </Link>{" "}
-    de Dourbia
-  </label>
-</div>
-
+      <div className="right-panel">
+        <Image
+          src="/logo3.png"
+          alt="Logo Dourbia"
+          width={90}
+          height={80}
+          className="logo"
+        />
+        <div className="form-container">
+          <h2 className="form-title">Créer un compte</h2>
+          <form onSubmit={handleSubmit} className="auth-form">
+            {/* Input Nom complet */}
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="Nom et prénom"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="form-input"
+                required
+              />
             </div>
 
+            {/* Input Email */}
+            <div className="input-group">
+              <input
+                type="email"
+                placeholder="Adresse e-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-input"
+                required
+              />
+            </div>
 
-            {/* Bouton d'inscription */}
-            <div className="flex flex-col justify-center items-center mx-auto mt-12">
+            {/* Input Mot de passe */}
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-input"
+                required
+              />
               <button
-                type="submit"
-                className="w-[200px] h-[37px] bg-[#5ED8F2] text-white rounded-[15px] py-3 text-m opacity-100 hover:bg-[#4AC0D8] font-actor flex justify-center items-center"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle"
               >
-                S'inscrire
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 18" fill="none">
+                  {showPassword ? (
+                    <>
+                      <path d="M9.73 2.073C10.1516 2.0241 10.5756 1.99973 11 2C15.664 2 19.4 4.903 21 9C20.6127 9.99659 20.0894 10.9348 19.445 11.788M5.52 3.519C3.48 4.764 1.9 6.693 1 9C2.6 13.097 6.336 16 11 16C12.9321 16.0102 14.8292 15.484 16.48 14.48M8.88 6.88C8.6014 7.1586 8.3804 7.48935 8.22963 7.85335C8.07885 8.21736 8.00125 8.6075 8.00125 9.0015C8.00125 9.3955 8.07885 9.78564 8.22963 10.1496C8.3804 10.5137 8.6014 10.8444 8.88 11.123C9.1586 11.4016 9.48934 11.6226 9.85335 11.7734C10.2174 11.9242 10.6075 12.0018 11.0015 12.0018C11.3955 12.0018 11.7856 11.9242 12.1496 11.7734C12.5137 11.6226 12.8444 11.4016 13.123 11.123" stroke="#777272" strokeOpacity="0.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M3 1L19 17" stroke="#777272" strokeOpacity="0.5" strokeLinecap="round" />
+                    </>
+                  ) : (
+                    <path d="M11 2C6.336 2 2.6 4.903 1 9C2.6 13.097 6.336 16 11 16C15.664 16 19.4 13.097 21 9C19.4 4.903 15.664 2 11 2ZM11 13.5C8.51472 13.5 6.5 11.4853 6.5 9C6.5 6.51472 8.51472 4.5 11 4.5C13.4853 4.5 15.5 6.51472 15.5 9C15.5 11.4853 13.4853 13.5 11 13.5ZM11 6C9.34315 6 8 7.34315 8 9C8 10.6569 9.34315 12 11 12C12.6569 12 14 10.6569 14 9C14 7.34315 12.6569 6 11 6Z" fill="#777272" fillOpacity="0.5" />
+                  )}
+                </svg>
               </button>
             </div>
 
-            {/* Lien de connexion */}
-            <div className="flex justify-center mt-13">
-              <Link
-                href="/sign-in"
-                className="text-[#002863] underline text-[17px] font-montserrat-light underline-offset-3"
+            {/* Input Confirmation mot de passe */}
+            <div className="input-group">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirmer mot de passe"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="form-input"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="password-toggle"
               >
-                Vous avez déjà un compte?
-              </Link>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 18" fill="none">
+                  {showConfirmPassword ? (
+                    <>
+                      <path d="M9.73 2.073C10.1516 2.0241 10.5756 1.99973 11 2C15.664 2 19.4 4.903 21 9C20.6127 9.99659 20.0894 10.9348 19.445 11.788M5.52 3.519C3.48 4.764 1.9 6.693 1 9C2.6 13.097 6.336 16 11 16C12.9321 16.0102 14.8292 15.484 16.48 14.48M8.88 6.88C8.6014 7.1586 8.3804 7.48935 8.22963 7.85335C8.07885 8.21736 8.00125 8.6075 8.00125 9.0015C8.00125 9.3955 8.07885 9.78564 8.22963 10.1496C8.3804 10.5137 8.6014 10.8444 8.88 11.123C9.1586 11.4016 9.48934 11.6226 9.85335 11.7734C10.2174 11.9242 10.6075 12.0018 11.0015 12.0018C11.3955 12.0018 11.7856 11.9242 12.1496 11.7734C12.5137 11.6226 12.8444 11.4016 13.123 11.123" stroke="#777272" strokeOpacity="0.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M3 1L19 17" stroke="#777272" strokeOpacity="0.5" strokeLinecap="round" />
+                    </>
+                  ) : (
+                    <path d="M11 2C6.336 2 2.6 4.903 1 9C2.6 13.097 6.336 16 11 16C15.664 16 19.4 13.097 21 9C19.4 4.903 15.664 2 11 2ZM11 13.5C8.51472 13.5 6.5 11.4853 6.5 9C6.5 6.51472 8.51472 4.5 11 4.5C13.4853 4.5 15.5 6.51472 15.5 9C15.5 11.4853 13.4853 13.5 11 13.5ZM11 6C9.34315 6 8 7.34315 8 9C8 10.6569 9.34315 12 11 12C12.6569 12 14 10.6569 14 9C14 7.34315 12.6569 6 11 6Z" fill="#777272" fillOpacity="0.5" />
+                  )}
+                </svg>
+              </button>
             </div>
+
+            {/* Input Pays */}
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="Pays"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className="form-input"
+                required
+              />
+            </div>
+
+            {/* Input Région */}
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="Région"
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
+                className="form-input"
+                required
+              />
+            </div>
+
+            {/* Checkbox Conditions */}
+            {/* <div className="terms-checkbox">
+              <input
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                required
+              />
+              <label>
+                J&apos;accepte les{" "}
+                <Link href="#">conditions d&apos;utilisation</Link>{" "}
+                de Dourbia
+              </label>
+            </div> */}
+            <div className="terms-checkbox" onClick={() => setAcceptedTerms(!acceptedTerms)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+                fill="none"
+                className="checkbox-svg"
+              >
+                {/* Case non cochée */}
+                <path
+                  d="M27.492 2.0166H8.64581C4.92851 2.0166 1.91504 5.03007 1.91504 8.74737V27.5935C1.91504 31.3108 4.92851 34.3243 8.64581 34.3243H27.492C31.2093 34.3243 34.2227 31.3108 34.2227 27.5935V8.74737C34.2227 5.03007 31.2093 2.0166 27.492 2.0166Z"
+                  stroke="#777272"
+                />
+                {/* Case cochée - visible seulement quand acceptedTerms est true */}
+                {acceptedTerms && (
+                  <path
+                    d="M27.492 2.0166H8.64581C4.92851 2.0166 1.91504 5.03007 1.91504 8.74737V27.5935C1.91504 31.3108 4.92851 34.3243 8.64581 34.3243H27.492C31.2093 34.3243 34.2227 31.3108 34.2227 27.5935V8.74737C34.2227 5.03007 31.2093 2.0166 27.492 2.0166Z"
+                    fill="#777272"
+                  />
+                )}
+              </svg>
+              <label>
+                J&apos;accepte les{" "}
+                <Link href="#">conditions d&apos;utilisation</Link>{" "}
+                de Dourbia
+              </label>
+            </div>
+            {/* Bouton d'inscription */}
+            <button type="submit" className="signup-button">
+              S'inscrire
+            </button>
+
+            {/* Lien de connexion */}
+            <Link href="/" className="login-link">
+              Vous avez déjà un compte?
+            </Link>
           </form>
         </div>
       </div>

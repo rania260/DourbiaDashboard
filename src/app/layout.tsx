@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { ABeeZee } from "next/font/google";
 import { Actor } from "next/font/google";
 import { Montserrat } from "next/font/google";
+import Providers from "@/components/Providers";
 
 import "./globals.css";
 
@@ -48,7 +49,6 @@ const montserratSemiBold = Montserrat({
   style: "normal",
 });
 
-
 export const metadata: Metadata = {
   title: "Dourbia Admin Dashboard",
   description: "Next.js Admin Management System",
@@ -60,8 +60,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-<html lang="en" className={`${inter.variable} ${abeezee.variable} ${actor.variable} ${montserrat.variable} ${montserratLight.variable} ${montserratSemiBold.variable}`}>
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={`${inter.variable} ${abeezee.variable} ${actor.variable} ${montserrat.variable} ${montserratLight.variable} ${montserratSemiBold.variable}`}>
+      <body className={inter.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

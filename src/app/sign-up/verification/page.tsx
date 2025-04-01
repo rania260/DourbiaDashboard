@@ -10,6 +10,7 @@ export default function VerificationForm() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [countdown, setCountdown] = useState(0);
     const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null));
 
     useEffect(() => {
@@ -18,6 +19,16 @@ export default function VerificationForm() {
             setEmail(storedEmail);
         }
     }, []);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (countdown > 0) {
+            timer = setInterval(() => {
+                setCountdown((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [countdown]);
 
     const handleCodeChange = (index: number, value: string) => {
         if (/^\d*$/.test(value) && value.length <= 1) {
@@ -30,7 +41,6 @@ export default function VerificationForm() {
             }
         }
     };
-
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -69,6 +79,14 @@ export default function VerificationForm() {
     };
 
     const handleResendCode = async () => {
+        if (countdown > 0) {
+            setError(`Veuillez attendre ${countdown} secondes avant de demander un nouveau code`);
+            return;
+        }
+
+        setLoading(true);
+        setError("");
+
         try {
             const response = await fetch("http://localhost:8000/auth/verification-otp", {
                 method: "POST",
@@ -83,8 +101,11 @@ export default function VerificationForm() {
             }
 
             setError("Nouveau code envoyé avec succès !");
+            setCountdown(60); // Démarrer un compte à rebours de 60 secondes
         } catch (err) {
             setError(err instanceof Error ? err.message : "Échec de l'envoi du code");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -173,8 +194,10 @@ export default function VerificationForm() {
                                 <button
                                     type="button"
                                     onClick={handleResendCode}
-                                    className="text-[25px] text-[#002863] font-inter hover:underline flex items-center disabled:opacity-50"
-                                    disabled={loading}
+                                    className={`text-[25px] text-[#002863] font-inter hover:underline flex items-center disabled:opacity-50 ${
+                                        countdown > 0 ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    disabled={loading || countdown > 0}
                                 >
                                     <Image
                                         src="/renvoi.png"
@@ -183,7 +206,7 @@ export default function VerificationForm() {
                                         height={25}
                                         className="mr-2"
                                     />
-                                    Renvoi du code
+                                    {countdown > 0 ? `Renvoyer dans ${countdown}s` : "Renvoi du code"}
                                 </button>
                                 <button
                                     type="submit"

@@ -34,14 +34,14 @@ const FormModal = ({
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
     type === "create" 
-      ? "bg-[#c3ebfa]"
+      ? "bg-[##c3ebfa]"
       : type === "edit"
-      ? "bg-[#c3ebfa]"
+      ? "bg-[##c3ebfa]"
       : type === "delete"
-      ? "bg-[#c3ebfa]"
+      ? "bg-[##A7001E]"
       : type === "ban"
-      ? "bg-yellow-200"
-      : "bg-orange";
+      ? ""
+      : "";
 
    const [open, setOpen] = useState(false);
    const [loading, setLoading] = useState(false);

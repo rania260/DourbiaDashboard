@@ -2,26 +2,37 @@
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { Eye, EyeOff } from "lucide-react";
+import '../../../style/forgot-password.css';
 
 const ForgotPassword = () => {
   const router = useRouter();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (newPassword.length < 8) {
+      setError("Le mot de passe doit contenir au moins 8 caractères.");
+      return;
+    }
+
     if (newPassword !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
+      setPasswordMismatch(true);
       return;
     }
 
     setLoading(true);
     setError('');
     setSuccess('');
+    setPasswordMismatch(false);
 
     try {
       const response = await fetch('http://localhost:8000/auth/password/reset', {
@@ -36,7 +47,6 @@ const ForgotPassword = () => {
 
       if (response.ok) {
         setSuccess('Mot de passe réinitialisé avec succès');
-        // Attendre 2 secondes avant de rediriger
         setTimeout(() => {
           router.push('/');
         }, 2000);
@@ -51,60 +61,82 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      {/* Cadre principal avec bordure similaire */}
-      <div
-        className="bg-white rounded-xl shadow-lg flex flex-col items-center backdrop-blur-sm border border-gray-300"
-        style={{
-          width: '590px', // largeur mise à jour
-          height: '706px',
-          padding: '20px 40px'
-        }}
-      >
-        {/* Logo */}
-        <Image src="/logo4.png" alt="Logo" width={90} height={45} className="mx-auto mb-17" />
+    <div className="forgot-container">
+      <Image 
+        src="/logo4.png" 
+        alt="Logo" 
+        width={90} 
+        height={45} 
+        className="forgot-logo" 
+      />
 
-        {/* Titre */}
-        <h1 className="text-[30px] mb-14 text-[#FB7822] font-abeezee">
-          Nouveau mot de passe
-        </h1>
+      <h1 className="forgot-title">
+        Réinitialisez le mot de passe
+      </h1>
 
-        {error && (
-          <p className="text-red-500 mb-4 text-sm">{error}</p>
-        )}
+      {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>}
 
-        {success && (
-          <p className="text-green-500 mb-4 text-sm font-medium">{success}</p>
-        )}
-
-        <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-4">
+      <form onSubmit={handleSubmit} className="forgot-form">
+        {/* Nouveau mot de passe */}
+        <div className="input-container">
           <input
-            type="password"
+            type={showNewPassword ? "text" : "password"}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder="Nouveau mot de passe"
-            className="w-[500px] h-[45px] rounded-[15px] px-4 py-2.5 border border-[#5ED8F2] outline-none text-sm opacity-100 text-[#718096] font-abeezee"
+            className="forgot-input"
             required
           />
-
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirmer le mot de passe"
-            className="w-[500px] h-[45px] rounded-[15px] px-4 py-2.5 border border-[#5ED8F2] outline-none text-sm opacity-100 text-[#718096] font-abeezee"
-            required
-          />
-
           <button
-            type="submit"
-            disabled={loading}
-            className="w-[200px] h-[37px] bg-[#FB7822] text-white rounded-[15px] py-3 text-m opacity-100 hover:bg-[#FB7822] font-abeezee flex justify-center items-center mt-8"
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowNewPassword(!showNewPassword)}
           >
-            {loading ? 'Modification...' : 'Confirmer'}
+            {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
-        </form>
-      </div>
+          {newPassword.length > 0 && newPassword.length < 8 && (
+            <p className="password-requirement">
+              Le mot de passe doit contenir au moins 8 caractères.
+            </p>
+          )}
+        </div>
+
+        {/* Confirmer le mot de passe */}
+        <div className="input-container">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setPasswordMismatch(newPassword !== e.target.value);
+            }}
+            placeholder="Confirmer le mot de passe"
+            className="forgot-input"
+            required
+          />
+          <button
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+          {passwordMismatch && (
+            <p className="error-message">
+              Les deux mots de passe sont différents
+            </p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="submit-button"
+        >
+          {loading ? 'Modification...' : 'Valider'}
+        </button>
+      </form>
     </div>
   );
 };

@@ -5,7 +5,6 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import Image from "next/image";
-import Link from "next/link";
 import ViewUserModal from "@/components/ViewUserModal";
 
 type User = {
@@ -69,6 +68,8 @@ const UsersList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const fetchUsers = async () => {
     try {
@@ -95,6 +96,15 @@ const UsersList = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const indexOfLastUser = currentPage * itemsPerPage;
+  const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(users.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   const renderRow = (item: User) => {
     const verification = item.emailVerifiedAt
@@ -138,7 +148,7 @@ const UsersList = () => {
         <td>
           <div className="flex items-center gap-2">
             <button 
-              className="w-7 h-7 flex items-center justify-center rounded-full bg-[#c3ebfa]"
+              className="w-7 h-7 flex items-center justify-center rounded-full"
               onClick={() => setSelectedUser(item)}
             >
               <Image src="/view.png" alt="" width={16} height={16} />
@@ -167,12 +177,12 @@ const UsersList = () => {
           <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
             <TableSearch />
             <div className="flex items-center gap-4 self-end">
-              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-orange-200">
+              {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-orange-200">
                 <Image src="/filter.png" alt="" width={14} height={14} />
               </button>
               <button className="w-8 h-8 flex items-center justify-center rounded-full bg-orange-200">
                 <Image src="/sort.png" alt="" width={14} height={14} />
-              </button>
+              </button> */}
               <FormModal table="users" type="create" onSuccess={fetchUsers} />
             </div>
           </div>
@@ -181,10 +191,14 @@ const UsersList = () => {
         {loading ? (
           <div>Chargement...</div>
         ) : (
-          <Table columns={columns} renderRow={renderRow} data={users} />
+          <Table columns={columns} renderRow={renderRow} data={currentUsers} />
         )}
         {/* PAGINATION */}
-        <Pagination />
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
       
       {/* Modal de visualisation */}

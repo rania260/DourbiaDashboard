@@ -3,70 +3,70 @@ import Link from "next/link";
 
 const menuItems = [
   {
-    title: "DASHBOARD",
+    title: "",
     items: [
       {
         icon: "/dashboard.png",
-        label: "Dashboard",
+        label: "Tableau de bord",
         href: "/admin",
         visible: ["admin"],
       },
     ],
   },
   {
-    title: "MANAGEMENT",
+    title: "",
     items: [
       {
         icon: "/users.png",
-        label: "Manage Users",
+        label: "Gestion Utilisateur",
         href: "/list/users",
         visible: ["admin"],
       },
       {
         icon: "/destination.jpg",
-        label: "Manage Destinations",
+        label: "Gestion Destinations",
         href: "/admin/destinations",
         visible: ["admin"],
       },
       {
         icon: "/monument.jpg",
-        label: "Manage Monuments",
+        label: "Gestion Monuments",
         href: "/admin/monuments",
         visible: ["admin"],
       },
       {
         icon: "/tours.png",
-        label: "Manage Tours",
+        label: "Gestion Circuits",
         href: "/admin/tours",
         visible: ["admin"],
       },
       {
         icon: "/content.png",
-        label: "Manage Content",
+        label: "Gestion Contenu",
         href: "/admin/content",
         visible: ["admin"],
       },
       {
         icon: "/packages.png",
-        label: "Manage Packages",
+        label: "Gestion Pack",
         href: "/admin/packages",
         visible: ["admin"],
       },
       {
         icon: "/subscriptions.png",
-        label: "Manage Subscriptions",
+        label: "Gestion Abonnements",
         href: "/admin/subscriptions",
         visible: ["admin"],
       },
       {
         icon: "/contributions.png",
-        label: "Manage User Contributions",
+        label: "Gestion contributions des utilisateurs",
         href: "/admin/contributions",
         visible: ["admin"],
       },
       {
         icon: "/events.png",
-        label: "Manage Events",
+        label: "Gestion événements",
         href: "/admin/events",
         visible: ["admin"],
       },
@@ -77,19 +77,19 @@ const menuItems = [
     items: [
       {
         icon: "/profile.png",
-        label: "Profile",
+        label: "Profil",
         href: "/profile",
         visible: ["admin"],
       },
       {
         icon: "/setting.png",
-        label: "Settings",
+        label: "Paramètres",
         href: "/settings",
         visible: ["admin"],
       },
       {
         icon: "/logout.png",
-        label: "Logout",
+        label: "Déconnexion",
         href: "/logout",
         visible: ["admin"],
       },

@@ -1,0 +1,193 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(0deg, #FEFEFE 0%, #FEFEFE 100%), #FFF;
+}
+
+/* Main container */
+.code-container {
+    padding: 20px 40px;
+    width: 35rem;
+    height: 45rem;
+    flex-shrink: 0;
+    border-radius: 1.375rem;
+    background: #FFF;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.29);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0 4.25rem 0;
+}
+
+/* Logo */
+.code-logo {
+    width: 6.4375rem;
+    height: 5.875rem;
+    flex-shrink: 0;
+    margin: 0 auto 5.25rem auto;
+}
+
+/* Title */
+.code-title {
+    color: #FB7822;
+    font-family: ABeeZee;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 4rem;
+}
+
+/* Description text */
+.code-description {
+    color: #474747;
+    text-align: center;
+    font-family: ABeeZee;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 2.38rem;
+}
+
+/* Code inputs container */
+.code-inputs {
+    display: flex;
+    width: 24.375rem;
+    height: 4.45313rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.875rem;
+    flex-shrink: 0;
+    margin-bottom: 4rem;
+}
+
+/* Individual code input */
+.code-input {
+    width: 2.424rem;
+    height: 2.8125rem;
+    text-align: center;
+    background: transparent;
+    border-radius: 0.3125rem;
+    border: 1px solid #5ED8F2;
+    font-size: 1.25rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.code-input:focus {
+    border-color: #5ED8F2;
+    box-shadow: 0 0 0 0.125rem rgba(94, 216, 242, 0.3);
+}
+
+/* Buttons container */
+.code-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3.75rem;
+    width: 100%;
+}
+
+/* Resend code button */
+.resend-button {
+    color: #002863;
+    font-family: Inter;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    gap: 0.69rem;
+}
+
+.resend-button:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+/* Next button */
+.next-button {
+    color: #5ED8F2;
+    font-family: Inter;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    gap: 0.69rem;
+}
+.next-button:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+.next-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* Error message */
+.error-message {
+    color: #ef4444;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 40rem) {
+    .code-container {
+        width: 90%;
+        height: auto;
+        padding: 1.25rem;
+        margin: 1rem;
+    }
+
+    .code-inputs {
+        gap: 0.5rem;
+    }
+
+    .code-input {
+        width: 2rem;
+        height: 2.5rem;
+        font-size: 1rem;
+    }
+
+    .code-title {
+        font-size: 1.5rem;
+    }
+
+    .code-description {
+        font-size: 0.875rem;
+    }
+
+    .resend-button {
+        font-size: 1.25rem;
+    }
+
+    .next-button {
+        font-size: 1.375rem;
+    }
+}
