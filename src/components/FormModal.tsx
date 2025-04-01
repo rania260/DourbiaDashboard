@@ -34,7 +34,7 @@ const FormModal = ({
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
     type === "create" 
-      ? "bg-[##c3ebfa]"
+      ? "bg-[#c3ebfa]"
       : type === "edit"
       ? "bg-[##c3ebfa]"
       : type === "delete"

@@ -1,0 +1,364 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+/* Main container */
+.main-container {
+    min-height: 100vh;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+/* Left panel */
+.left-panel {
+    position: relative;
+    border: 1px solid #d1d5db;
+    backdrop-filter: blur(0.25rem);
+    box-shadow: rgba(0, 0, 0, 0.1);
+    border-radius: 0 1.25rem 1.25rem 0;
+    overflow: hidden;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.overlay {
+    position: relative;
+    inset: 0;
+    background: lightgray -299.126px -51.78px / 160.447% 105.938% no-repeat;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 0rem 1.375rem 1.375rem 0rem;
+}
+
+.logo-position {
+    position: absolute;
+    left: 9.4rem;
+    top: 4.85rem;
+    width: 31.9375rem;
+    height: 16.375rem;
+    flex-shrink: 0;
+}
+
+.title-text {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 3.5rem;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    position: absolute;
+    left: 9.7rem;
+    top: 26.4rem;
+}
+
+/* Spacer */
+.spacer {
+    width: 5rem;
+}
+
+/* Right panel */
+.right-panel {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.375rem 0rem 0rem 1.375rem;
+    background: #FFF;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.29);
+    padding: 2rem;
+}
+
+/* Logo style */
+.right-panel .logo {
+    position: absolute;
+    top: 1.44rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 1.5625rem;
+    width: 6.625rem;
+    height: 6.3125rem;
+    flex-shrink: 0;
+}
+
+/* Form container */
+.form-container {
+    width: 38.125rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+    margin-top: 7rem;
+}
+
+/* Title and description */
+.verification-title {
+    color: #FB7822;
+    font-family: ABeeZee;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.verification-description {
+    color: #474747;
+    text-align: center;
+    font-family: Actor;
+    font-size: 1.15rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 4rem;
+}
+
+/* Code inputs container */
+.code-inputs {
+    display: inline-flex;
+    height: 4.45313rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.875rem;
+    flex-shrink: 0;
+    margin-bottom: 3.7rem;
+    flex-wrap: wrap;
+}
+
+.code-input {
+    width: 2.42438rem;
+    height: 2.8125rem;
+    text-align: center;
+    border-radius: 0.3125rem;
+    border: 1px solid #5ED8F2;
+    font-size: 1.25rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.code-input:focus {
+    box-shadow: 0 0 0 0.125rem rgba(94, 216, 242, 0.3);
+}
+
+/* Error message */
+.error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    color: #22c55e;
+    font-size: 0.875rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3.75rem;
+    width: 100%;
+}
+
+.resend-button {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #002863;
+    font-family: Inter;
+    font-size: 1.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.resend-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.resend-button:hover:not(:disabled) {
+    text-decoration: underline;
+}
+
+.next-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    color: #5ED8F2;
+    font-family: Inter;
+    font-size: 2.1875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.next-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.next-button:hover:not(:disabled) {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 64rem) {
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+
+    .left-panel {
+        display: none;
+    }
+
+    .spacer {
+        display: none;
+    }
+
+    .right-panel {
+        border-radius: 0;
+        padding: 1rem;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 38.125rem;
+        margin-top: 5rem;
+        padding: 0.5rem;
+    }
+
+    .verification-title {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .verification-description {
+        font-size: 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .code-inputs {
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .code-input {
+        width: 2rem;
+        height: 2.5rem;
+        font-size: 1.1rem;
+    }
+
+    .action-buttons {
+        gap: 2.5rem;
+    }
+
+    .resend-button {
+        font-size: 1.5rem;
+    }
+
+    .next-button {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 40rem) {
+    .right-panel {
+        padding: 0.5rem;
+    }
+
+    .form-container {
+        padding: 0.25rem;
+    }
+
+    .verification-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .verification-description {
+        font-size: 0.875rem;
+        margin-bottom: 2rem;
+    }
+
+    .code-inputs {
+        gap: 0.375rem;
+        margin-bottom: 2rem;
+    }
+
+    .code-input {
+        width: 1.75rem;
+        height: 2.25rem;
+        font-size: 1rem;
+    }
+
+    .action-buttons {
+        gap: 2rem;
+    }
+
+    .resend-button {
+        font-size: 1.25rem;
+    }
+
+    .next-button {
+        font-size: 1.5rem;
+    }
+
+    .right-panel .logo {
+        width: 5rem;
+        height: 4.5rem;
+        top: 1rem;
+    }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 20rem) {
+    .code-input {
+        width: 1.5rem;
+        height: 2rem;
+        font-size: 0.875rem;
+    }
+
+    .verification-title {
+        font-size: 1.25rem;
+    }
+
+    .verification-description {
+        font-size: 0.75rem;
+    }
+
+    .resend-button,
+    .next-button {
+        font-size: 1rem;
+    }
+} 

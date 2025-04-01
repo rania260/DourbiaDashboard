@@ -15,16 +15,6 @@ body {
 
 /* Main container */
 .email-container {
-    /* background-color: white;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    backdrop-filter: blur(4px);
-    border: 1px solid #d1d5db;
-    width: 590px;
-    height: 706px;*/
     padding: 20px 40px;
     width: 35rem;
     height: 45rem;
@@ -71,85 +61,50 @@ body {
     font-weight: 400;
     line-height: normal;
 }
-
-/* .email-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 3.5rem;
-    flex-shrink: 0;
-    border-radius: 0.9375rem;
-    border: 1px solid #5ED8F2;
-    padding: 0.9rem 0 0.5rem 2rem;
-    
-    
-}
-
-.email-input {
-    outline: none;
-    width: 100%;
-    height: 1.75rem;
-    margin-bottom: 6.5rem;
-    color: #718096;
-    font-family: ABeeZee;
-    font-size: 1.3rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-} */
 /* Formulaire unifié avec styles fixes */
 .email-form {
-    width: 30.5rem; /* Largeur fixe comme dans Figma */
-    height: 3.5rem; /* Hauteur fixe */
-    position: relative; /* Pour positionnement absolu des enfants */
-    border-radius: 0.9375rem;
-    border: 1px solid #5ED8F2;
+    width: 30.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* Espace entre l'input et le bouton */
+    align-items: center;
+    position: relative;
     padding: 0;
-    margin: 0 auto; /* Centrage horizontal */
-    background: #FFF;
-    overflow: hidden; /* Pour contenir les éléments */
 }
 
-/* Input email - positionnement absolu */
+/* Input container */
 .email-input {
-    position: absolute;
-    top: 0.9rem;
-    left: 2rem;
-    width: calc(100% - 4rem); /* 100% - padding gauche/droite */
-    height: 1.75rem;
-    border: none;
-    outline: none;
+    width: 100%;
+    height: 3.5rem;
+    border-radius: 0.9375rem;
+    border: 1px solid #5ED8F2;
+    padding: 0.9rem 2rem;
     color: #718096;
     font-family: ABeeZee;
     font-size: 1.3rem;
     font-weight: 400;
-    padding: 0;
-    background: transparent;
+    background: #FFF;
+    outline: none;
 }
 
 /* Button */
 .email-button {
-    position: absolute;
-    display: flex;
     width: 15rem;
     height: 3rem;
     padding: 1rem;
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5625rem;
-    flex-shrink: 0;
     border-radius: 1.25rem;
     background: #FB7822;
     color: #FFF;
     font-family: ABeeZee;
     font-size: 1.2rem;
-    font-style: normal;
     font-weight: 400;
-    line-height: normal;
     text-transform: capitalize;
-    left: 8rem;
-    top: 1rem;
+    border: none;
+    cursor: pointer;
 }
 
 .email-button:hover {
@@ -170,15 +125,56 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
     .email-container {
         width: 90%;
         height: auto;
-        padding: 20px;
+        min-height: 35rem;
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .email-form {
+        width: 100%;
+        gap: 2rem;
     }
 
     .email-input {
         width: 100%;
-        max-width: 500px;
+        font-size: 1.1rem;
+    }
+
+    .email-button {
+        width: 12rem;
+        font-size: 1rem;
+    }
+
+    .email-logo {
+        width: 5rem;
+        height: 4.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .email-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .email-description {
+        font-size: 0.8rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 20rem) {
+    .email-container {
+        padding: 1rem;
+    }
+
+    .email-button {
+        width: 10rem;
+        height: 2.5rem;
+        font-size: 0.9rem;
     }
 }
