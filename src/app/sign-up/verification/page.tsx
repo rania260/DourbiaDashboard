@@ -111,10 +111,10 @@ export default function VerificationForm() {
     };
 
     return (
-        <main className="main-container">
+        <main className="main">
             {/* Left panel */}
-            <div className="left-panel">
-                <div className="image-container">
+            <div className="left">
+                <div className="image-left">
                     <Image
                         src="/SignupImage.png"
                         alt="Background Dourbia"
@@ -123,7 +123,7 @@ export default function VerificationForm() {
                         className="background-image"
                     />
                     <div className="overlay">
-                        <div className="logo-position">
+                        <div className="logo-left">
                             <Image
                                 src="/logo1.png"
                                 alt="Logo Dourbia"
@@ -132,7 +132,7 @@ export default function VerificationForm() {
                                 className="main-logo"
                             />
                         </div>
-                        <h1 className="title-text">
+                        <h1 className="title-text-left">
                             BIENVENUE À <br />
                             <span>DOURBIA</span>
                         </h1>
@@ -143,7 +143,7 @@ export default function VerificationForm() {
             <div className="spacer"></div>
 
             {/* Right panel */}
-            <div className="right-panel">
+            <div className="right-panel-code">
                 <Image
                     src="/logo3.png"
                     alt="Logo Dourbia"
@@ -151,7 +151,7 @@ export default function VerificationForm() {
                     height={80}
                     className="logo"
                 />
-                <div className="form-container">
+                <div className="form-code">
                     <h2 className="verification-title">
                         Entrez le code de vérification
                     </h2>

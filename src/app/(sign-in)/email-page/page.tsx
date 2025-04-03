@@ -42,37 +42,37 @@ const EmailPass = () => {
     };
 
     return (
-        <div className="email-container">
+        <div className="emailContainer">
             <Image
                 src="/logo4.png"
                 width={103}
                 height={94}
                 alt="Logo Dourbia"
-                className="email-logo"
+                className="emaillogo"
             />
-            <h1 className="email-title">
+            <h1 className="emailtitle">
                 Mot de passe oublié
             </h1>
-            <p className="email-description">
+            <p className="emaildescription">
                 Nous vous enverrons un code de réinitialisation<br />
                 de votre mot de passe par e-mail
             </p>
             {error && (
                 <p className="error-message">{error}</p>
             )}
-            <form onSubmit={handleSubmit} className="email-form">
+            <form onSubmit={handleSubmit} className="emailform">
                 <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Adresse e-mail"
-                    className="email-input"
+                    className="emailInput"
                     required
                 />
                 <button
                     type="submit"
                     disabled={loading}
-                    className="email-button"
+                    className="emailbutton"
                 >
                     {loading ? 'Envoi...' : 'Confirmer'}
                 </button>

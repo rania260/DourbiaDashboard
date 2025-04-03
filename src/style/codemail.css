@@ -102,7 +102,7 @@ body {
 .resend-button {
     color: #002863;
     font-family: Inter;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -124,7 +124,7 @@ body {
 .next-button {
     color: #5ED8F2;
     font-family: Inter;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

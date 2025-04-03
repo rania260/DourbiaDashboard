@@ -1,14 +1,12 @@
 /* Base styles */
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 html {
     font-size: 16px;
-}
-
+} */
 /* Main container */
 .main-container {
     min-height: 100vh;
@@ -28,20 +26,18 @@ html {
     border-radius: 0 1.25rem 1.25rem 0;
     overflow: hidden;
 }
-
 .image-container {
     position: relative;
     width: 100%;
     height: 100%;
 }
-
-.overlay {
+/* .overlay {
     position: relative;
     inset: 0;
     background: lightgray -299.126px -51.78px / 160.447% 105.938% no-repeat;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border-radius: 0rem 1.375rem 1.375rem 0rem;
-}
+} */
 
 .logo-position {
     position: absolute;
@@ -51,27 +47,24 @@ html {
     height: 16.375rem;
     flex-shrink: 0;
 }
-
 .title-text {
     color: #FFF;
     text-align: center;
     font-family: Inter;
-    font-size: 3.5rem;
+    font-size: 3.7rem;
     font-style: normal;
     font-weight: 900;
     line-height: normal;
     text-transform: uppercase;
     flex-shrink: 0;
     position: absolute;
-    left: 9.7rem;
-    top: 26.4rem;
+    left: 9rem;
+    top: 26rem;
 }
-
 /* Spacer */
 .spacer {
     width: 5rem;
 }
-
 /* Right panel */
 .right-panel {
     position: relative;
@@ -82,7 +75,6 @@ html {
     background: #FFF;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.29);
 }
-
 /* Style pour le logo SVG */
 .right-panel .logo {
     position: absolute;
@@ -94,7 +86,6 @@ html {
     height: 6.3125rem;
     flex-shrink: 0;
 }
-
 .form-title {
     color: #60D8F4;
     font-family: Actor;
@@ -106,7 +97,6 @@ html {
     height: 1.78881rem;
     flex-shrink: 0;
     margin-top: 7rem;
-
 }
 
 .form-container {
@@ -117,27 +107,20 @@ html {
     align-items: center;
     flex-shrink: 0;
     position: relative;
-
 }
-
-
 /* Form elements */
 .auth-form {
     width: 100%;
     display: flex;
     flex-direction: column;
-
 }
-
 /* Form elements */
 .input-group {
     position: relative;
     display: flex;
     justify-content: center;
     width: 100%;
-
 }
-
 .form-input {
     height: 2.7rem;
     flex-shrink: 0;
@@ -249,7 +232,7 @@ html {
     margin-left: 11.2rem;
     color: #FFF;
     font-family: Actor;
-    font-size: 1.1875rem;
+    font-size: 1.25rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

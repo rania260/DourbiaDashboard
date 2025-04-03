@@ -1,5 +1,5 @@
 /* Base styles */
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -7,10 +7,10 @@
 
 html {
     font-size: 16px;
-}
+} */
 
 /* Main container */
-.main-container {
+.main {
     min-height: 100vh;
     background-color: white;
     display: grid;
@@ -20,7 +20,7 @@ html {
 }
 
 /* Left panel */
-.left-panel {
+.left {
     position: relative;
     border: 1px solid #d1d5db;
     backdrop-filter: blur(0.25rem);
@@ -29,21 +29,21 @@ html {
     overflow: hidden;
 }
 
-.image-container {
+.image-left {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-.overlay {
+/* .overlay {
     position: relative;
     inset: 0;
     background: lightgray -299.126px -51.78px / 160.447% 105.938% no-repeat;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border-radius: 0rem 1.375rem 1.375rem 0rem;
-}
+} */
 
-.logo-position {
+.logo-left {
     position: absolute;
     left: 9.4rem;
     top: 4.85rem;
@@ -52,7 +52,7 @@ html {
     flex-shrink: 0;
 }
 
-.title-text {
+.title-text-left{
     color: #FFF;
     text-align: center;
     font-family: Inter;
@@ -73,7 +73,7 @@ html {
 }
 
 /* Right panel */
-.right-panel {
+.right-panel-code {
     position: relative;
     display: flex;
     justify-content: center;
@@ -85,7 +85,7 @@ html {
 }
 
 /* Logo style */
-.right-panel .logo {
+.right-panel-code .logo {
     position: absolute;
     top: 1.44rem;
     left: 50%;
@@ -97,7 +97,7 @@ html {
 }
 
 /* Form container */
-.form-container {
+.form-code {
     width: 38.125rem;
     padding: 1rem;
     display: flex;
@@ -112,7 +112,7 @@ html {
 .verification-title {
     color: #FB7822;
     font-family: ABeeZee;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -144,8 +144,8 @@ html {
 }
 
 .code-input {
-    width: 2.42438rem;
-    height: 2.8125rem;
+    width: 2rem;
+    height: 2.4rem;
     text-align: center;
     border-radius: 0.3125rem;
     border: 1px solid #5ED8F2;
@@ -191,7 +191,7 @@ html {
     cursor: pointer;
     color: #002863;
     font-family: Inter;
-    font-size: 1.875rem;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -216,7 +216,7 @@ html {
     transition: opacity 0.3s ease;
     color: #5ED8F2;
     font-family: Inter;
-    font-size: 2.1875rem;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -234,7 +234,7 @@ html {
 
 /* Responsive adjustments */
 @media (max-width: 64rem) {
-    .main-container {
+    .main {
         grid-template-columns: 1fr;
     }
 
@@ -246,7 +246,7 @@ html {
         display: none;
     }
 
-    .right-panel {
+    .right-panel-code {
         border-radius: 0;
         padding: 1rem;
     }
@@ -293,7 +293,7 @@ html {
 }
 
 @media (max-width: 40rem) {
-    .right-panel {
+    .right-panel-code {
         padding: 0.5rem;
     }
 
@@ -334,7 +334,7 @@ html {
         font-size: 1.5rem;
     }
 
-    .right-panel .logo {
+    .right-panel-code .logo {
         width: 5rem;
         height: 4.5rem;
         top: 1rem;

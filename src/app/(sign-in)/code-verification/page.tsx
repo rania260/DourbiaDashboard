@@ -7,7 +7,7 @@ import '../../../style/codemail.css';
 
 const VerificationCode = () => {
     const router = useRouter();
-    const [code, setCode] = useState<string[]>(new Array(6).fill(''));
+  const [code, setCode] = useState<string[]>(new Array(6).fill(''));
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,7 @@ const VerificationCode = () => {
         setError('');
 
         try {
-            const response = await fetch(`http://localhost:8000/auth/password/verify-code/${otp}`, {
+            const response = await fetch(`http://localhost:8000/auth/verify-email/${otp}`, {
                 method: 'POST',
             });
 
@@ -60,7 +60,7 @@ const VerificationCode = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/auth/password/send-code', {
+            const response = await fetch('http://localhost:8000/auth/verification-otp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,10 +80,10 @@ const VerificationCode = () => {
         }
     };
 
-    return (
+  return (
         <div className="code-container">
-            <Image
-                src="/logo4.png"
+        <Image
+          src="/logo4.png"
                 alt="Logo Dourbia"
                 width={103}
                 height={94}
@@ -92,12 +92,12 @@ const VerificationCode = () => {
 
             <h1 className="code-title">
                 Entrez le code de vérification
-            </h1>
+        </h1>
 
             <p className="code-description">
-                Nous avons envoyé un code à 6 chiffres,<br />
-                Saisissez le code ci-dessous
-            </p>
+          Nous avons envoyé un code à 6 chiffres,<br />
+          Saisissez le code ci-dessous
+        </p>
 
             {error && (
                 <p className="error-message">{error}</p>
@@ -105,16 +105,16 @@ const VerificationCode = () => {
 
             <div className="code-inputs">
                 {code.map((digit, index) => (
-                    <input
-                        key={index}
-                        type="text"
-                        maxLength={1}
+            <input
+              key={index}
+              type="text"
+              maxLength={1}
                         value={digit}
                         onChange={(e) => handleChange(e.target, index)}
                         className="code-input"
-                    />
-                ))}
-            </div>
+            />
+          ))}
+        </div>
 
             <div className="code-buttons">
                 <button
@@ -131,8 +131,8 @@ const VerificationCode = () => {
                             </clipPath>
                         </defs>
                     </svg>
-                    Renvoi du code
-                </button>
+            Renvoi du code
+          </button>
 
                 <button
                     onClick={handleSubmit}
@@ -158,10 +158,10 @@ const VerificationCode = () => {
                             </filter>
                         </defs>
                     </svg>
-                </button>
-            </div>
-        </div>
-    );
+          </button>
+      </div>
+    </div>
+  );
 };
 
 export default VerificationCode;

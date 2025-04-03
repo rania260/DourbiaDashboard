@@ -3,7 +3,6 @@
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
-
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -29,8 +28,6 @@
   font-family: var(--font-montserrat-semibold), sans-serif;
   font-weight: 600;
 }
-
-
 .react-calendar {
   width: 100% !important;
   border: none !important;
@@ -40,25 +37,20 @@
 .react-calendar__navigation__label__labelText {
   font-weight: 600;
 }
-
 .react-calendar__tile--active {
   background-color: #c3ebfa !important;
   color: black !important;
 }
-
 .rbc-btn-group:first-child {
   display: none !important;
 }
-
 .rbc-toolbar-label {
   text-align: right !important;
   padding: 0px 20px !important;
 }
-
 .rbc-btn-group:last-child {
   font-size: 13px !important;
 }
-
 .rbc-btn-group:last-child button {
   border: none !important;
   background-color: #f1f0ff !important;

@@ -392,10 +392,10 @@
 //                   required
 //                 />
 //                 {!email && (
-//                   <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-//                     <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Adresse e-mail</span>
-//                     <span className="text-[#FB7822] ml-1">*</span>
-//                   </div>
+                //   <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
+                //     <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Adresse e-mail</span>
+                //     <span className="text-[#FB7822] ml-1">*</span>
+                //   </div>
 //                 )}
 //               </div>
 

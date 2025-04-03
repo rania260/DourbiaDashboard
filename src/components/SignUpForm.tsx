@@ -25,7 +25,6 @@ export default function SignUpForm() {
       alert("Les mots de passe ne correspondent pas");
       return;
     }
-
     try {
       const response = await fetch("http://localhost:8000/auth/signup", {
         method: "POST",
@@ -110,7 +109,6 @@ export default function SignUpForm() {
                 required
               />
             </div>
-
             {/* Input Email */}
             <div className="input-group">
               <input
@@ -122,7 +120,6 @@ export default function SignUpForm() {
                 required
               />
             </div>
-
             {/* Input Mot de passe */}
             <div className="input-group">
               <input

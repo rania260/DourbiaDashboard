@@ -14,14 +14,12 @@ export default function SignInForm() {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
   const success = searchParams.get("success");
-
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
 
   // Effet pour afficher le message de succès
   useEffect(() => {
@@ -32,43 +30,43 @@ export default function SignInForm() {
   }, [success]);
 
   // Gestion de l'authentification Google
-  useEffect(() => {
-    const handleGoogleAuth = async () => {
-      if (session?.user) {
-        try {
-          const response = await fetch("http://localhost:8000/auth/google", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: session.user.email,
-              name: session.user.name,
-              googleId: session.user.id,
-              idToken: session.user.accessToken,
-            }),
-          });
+  // useEffect(() => {
+  //   const handleGoogleAuth = async () => {
+  //     if (session?.user) {
+  //       try {
+  //         const response = await fetch("http://localhost:8000/auth/google", {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({
+  //             email: session.user.email,
+  //             name: session.user.name,
+  //             googleId: session.user.id,
+  //             idToken: session.user.accessToken,
+  //           }),
+  //         });
 
-          const data = await response.json();
+  //         const data = await response.json();
 
-          if (response.ok) {
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify({
-              username: data.user.username,
-              role: data.user.role
-            }));
-            router.push("/admin");
-          }
-        } catch (error) {
-          console.error("Erreur Google Auth:", error);
-        }
-      }
-    };
+  //         if (response.ok) {
+  //           localStorage.setItem("token", data.token);
+  //           localStorage.setItem("user", JSON.stringify({
+  //             username: data.user.username,
+  //             role: data.user.role
+  //           }));
+  //           router.push("/admin");
+  //         }
+  //       } catch (error) {
+  //         console.error("Erreur Google Auth:", error);
+  //       }
+  //     }
+  //   };
 
-    if (session) {
-      handleGoogleAuth();
-    }
-  }, [session, router]);
+  //   if (session) {
+  //     handleGoogleAuth();
+  //   }
+  // }, [session, router]);
 
   // Gestion de la soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
@@ -116,7 +114,7 @@ export default function SignInForm() {
   };
 
   return (
-    <main className="main-container">
+    <main className="maincontainer">
       {/* Message de succès */}
       {showSuccess && (
         <div className="success-message">
@@ -125,17 +123,17 @@ export default function SignInForm() {
       )}
 
       {/* Partie Gauche - Image */}
-      <div className="left-panel">
-        <div className="image-container">
+      <div className="leftpanel">
+        <div className="imagecontainer">
           <Image
             src="/image11.png"
             alt="Background Dourbia"
             layout="fill"
             objectFit="cover"
-            className="background-image"
+            className="backgroundimage"
           />
           <div className="overlay">
-            <div className="logo-position">
+            <div className="logo-position1">
               <Image
                 src="/logo1.png"
                 alt="Logo Dourbia"
@@ -144,7 +142,7 @@ export default function SignInForm() {
                 className="main-logo"
               />
             </div>
-            <h1 className="title-text">
+            <h1 className="title-text1">
               ACCÉDEZ À <br />
               <span>DOURBIA !</span>
             </h1>
@@ -153,7 +151,6 @@ export default function SignInForm() {
       </div>
 
       <div className="spacer"></div>
-
       {/* Partie Droite - Formulaire */}
       <div className="right-panel">
         <Image
@@ -231,7 +228,6 @@ export default function SignInForm() {
               <label htmlFor="remember">Se rappeler de moi ?</label>
             </div>
 
-
             {/* Bouton Se Connecter */}
             <button type="submit" className="login-button">
               Se Connecter
@@ -253,7 +249,7 @@ export default function SignInForm() {
             {/* Bouton Google */}
             <button
               type="button"
-              onClick={handleGoogleSignIn}
+              // onClick={handleGoogleSignIn}
               className="google-button"
             >
               <FcGoogle size={20} />
