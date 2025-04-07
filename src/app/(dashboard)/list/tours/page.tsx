@@ -362,24 +362,24 @@
 
 
 //           <form onSubmit={handleSubmit} className="w-full space-y-1">
-//             <div className="space-y-3">
-//               {/* Champ Nom complet */}
-//               <div className="relative">
-//                 <input
-//                   type="text"
-//                   placeholder=""
-//                   value={fullName}
-//                   onChange={(e) => setFullName(e.target.value)}
-//                   className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-//                   required
-//                 />
-//                 {!fullName && (
-//                   <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-//                     <span className="text-[#8F8F8F] text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto">Nom et prénom</span>
-//                     <span className="text-[#FB7822] ml-1">*</span>
-//                   </div>
-//                 )}
-//               </div>
+            // <div className="space-y-3">
+            //   {/* Champ Nom complet */}
+            //   <div className="relative">
+            //     <input
+            //       type="text"
+            //       placeholder=""
+            //       value={fullName}
+            //       onChange={(e) => setFullName(e.target.value)}
+            //       className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
+            //       required
+            //     />
+            //     {!fullName && (
+            //       <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
+            //         <span className="text-[#8F8F8F] text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto">Nom et prénom</span>
+            //         <span className="text-[#FB7822] ml-1">*</span>
+            //       </div>
+            //     )}
+            //   </div>
 
 //               {/* Champ Email */}
 //               <div className="relative">

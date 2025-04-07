@@ -5,14 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
-import { signIn, useSession } from "next-auth/react";
 import "../style/login.css";
+import { useAuth } from "../app/context/auth-context";
 
 export default function SignInForm() {
   // États pour gérer le formulaire
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data: session } = useSession();
   const success = searchParams.get("success");
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -20,7 +19,11 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { setIsLoggedIn } = useAuth();
 
+  const handleGoogleSignIn = () => {
+
+    window.location.href = 'http://localhost:8000/auth/google';};
   // Effet pour afficher le message de succès
   useEffect(() => {
     if (success) {
@@ -28,46 +31,7 @@ export default function SignInForm() {
       setTimeout(() => setShowSuccess(false), 3000);
     }
   }, [success]);
-
-  // Gestion de l'authentification Google
-  // useEffect(() => {
-  //   const handleGoogleAuth = async () => {
-  //     if (session?.user) {
-  //       try {
-  //         const response = await fetch("http://localhost:8000/auth/google", {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({
-  //             email: session.user.email,
-  //             name: session.user.name,
-  //             googleId: session.user.id,
-  //             idToken: session.user.accessToken,
-  //           }),
-  //         });
-
-  //         const data = await response.json();
-
-  //         if (response.ok) {
-  //           localStorage.setItem("token", data.token);
-  //           localStorage.setItem("user", JSON.stringify({
-  //             username: data.user.username,
-  //             role: data.user.role
-  //           }));
-  //           router.push("/admin");
-  //         }
-  //       } catch (error) {
-  //         console.error("Erreur Google Auth:", error);
-  //       }
-  //     }
-  //   };
-
-  //   if (session) {
-  //     handleGoogleAuth();
-  //   }
-  // }, [session, router]);
-
+  
   // Gestion de la soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,15 +65,6 @@ export default function SignInForm() {
     } catch (error) {
       console.error("Erreur complète:", error);
       setErrorMessage("Erreur de connexion. Vérifiez votre connexion réseau.");
-    }
-  };
-
-  // Gestion de la connexion Google
-  const handleGoogleSignIn = async () => {
-    try {
-      await signIn("google");
-    } catch (error) {
-      console.error("Erreur de connexion Google:", error);
     }
   };
 
@@ -152,7 +107,7 @@ export default function SignInForm() {
 
       <div className="spacer"></div>
       {/* Partie Droite - Formulaire */}
-      <div className="right-panel">
+      <div className="rightpanel">
         <Image
           src="/logo4.png"
           alt="Logo Dourbia"
@@ -160,35 +115,35 @@ export default function SignInForm() {
           height={94}
           className="logo"
         />
-        <div className="form-container">
+        <div className="formcontainer">
 
-          <form onSubmit={handleSubmit} className="auth-form">
+          <form onSubmit={handleSubmit} className="authform">
             {/* Input Email */}
-            <div className="input-group email-input">
+            <div className="inputgroup emailinput">
               <input
                 type="email"
                 placeholder="Adresse e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="form-input"
+                className="forminput"
                 required
               />
             </div>
 
             {/* Input Mot de passe */}
-            <div className="input-group password-input">
+            <div className="inputgroup passwordinput">
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Mot de passe"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="form-input"
+                className="forminput"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="password-toggle"
+                className="passwordtoggle"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 18" fill="none">
                   {showPassword ? (
@@ -204,7 +159,7 @@ export default function SignInForm() {
             </div>
 
             {/* Checkbox Se rappeler */}
-            <div className="remember-me" onClick={() => setRememberMe(!rememberMe)}>
+            <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="31"
@@ -212,44 +167,64 @@ export default function SignInForm() {
                 viewBox="0 0 31 30"
                 fill="none"
               >
-                {/* Afficher le SVG "coché" si `rememberMe` est true */}
-                {rememberMe ? (
+                <path
+                  d="M27.1699 10.4524V29.9997H0V3.58008H21.4242L18.5984 6.83009H3.34231V26.7379H23.8155V14.3287L27.1699 10.4524Z"
+                  fill="#C7C2C2"
+                />
+                {rememberMe && (
                   <path
                     d="M14.7716 21.9375L6.60425 13.9957L10.296 10.4059L14.4435 14.4419L26.9619 0L30.9575 3.27069L14.7716 21.9375Z"
-                    fill="#C7C2C2"
-                  />
-                ) : (
-                  <path
-                    d="M27.1699 10.4524V29.9997H0V3.58008H21.4242L18.5984 6.83009H3.34231V26.7379H23.8155V14.3287L27.1699 10.4524Z"
                     fill="#C7C2C2"
                   />
                 )}
               </svg>
               <label htmlFor="remember">Se rappeler de moi ?</label>
             </div>
-
+            {/* <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="31"
+                height="30"
+                viewBox="0 0 31 30"
+                fill="none"
+              >
+                <path
+                  d="M1 1H30V29H1V1Z"
+                  fill="#fff"
+                  stroke="#C7C2C2"
+                  strokeWidth="2"
+                />
+                {rememberMe && (
+                  <path
+                    d="M7 15L13 21L24 8"
+                    stroke="#C7C2C2"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )}
+              </svg>
+              <label htmlFor="remember">Se rappeler de moi ?</label>
+            </div> */}
             {/* Bouton Se Connecter */}
-            <button type="submit" className="login-button">
+            <button type="submit" className="loginbutton">
               Se Connecter
             </button>
-
             {/* Mot de passe oublié */}
-            <div className="forgot-password">
+            <div className="forgotpassword">
               <Link href="/email-page">
                 Mot de passe oublié ?
               </Link>
             </div>
-
             <div className="separator">
               <div className="separator-line"></div>
               <span>OU</span>
               <div className="separator-line"></div>
             </div>
-
             {/* Bouton Google */}
             <button
               type="button"
-              // onClick={handleGoogleSignIn}
+              onClick={handleGoogleSignIn}
               className="google-button"
             >
               <FcGoogle size={20} />
@@ -257,7 +232,7 @@ export default function SignInForm() {
             </button>
 
             {/* Créer un compte */}
-            <div className="create-account">
+            <div className="createaccount">
               <p>Vous n'êtes pas un membre?</p>
               <Link href="/sign-up">
                 Créer un compte

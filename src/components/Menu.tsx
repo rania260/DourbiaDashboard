@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const menuItems = [
   {
@@ -90,29 +94,47 @@ const menuItems = [
       {
         icon: "/logout.png",
         label: "Déconnexion",
-        href: "/logout",
+        href: "#",
         visible: ["admin"],
+        isLogout: true, // ← On marque cette ligne comme spéciale
       },
     ],
   },
 ];
 
 const Menu = () => {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "http://localhost:3000" }); // ou ton URL de page login
+  };
+
   return (
     <div className="mt-4 text-xs">
       {menuItems.map((section) => (
         <div className="flex flex-col gap-2" key={section.title}>
           <span className="hidden lg:block text-gray-400 font-light mb-2 text-xs">{section.title}</span>
-          {section.items.map((item) => (
-            <Link
-              href={item.href}
-              key={item.label}
-              className="flex items-center justify-center lg:justify-start gap-3 px-3 py-2  md:px-2 rounded-md text-gray-500 hover:bg-[#c3ebfa] transition-all"
-            >
-              <Image src={item.icon} alt={item.label} width={16} height={16} />
-              <span className="text-sm hidden lg:block">{item.label}</span>
-            </Link>
-          ))}
+          {section.items.map((item) =>
+            item.isLogout ? (
+              <button
+                key={item.label}
+                onClick={handleLogout}
+                className="flex items-center justify-center lg:justify-start gap-3 px-3 py-2 md:px-2 rounded-md text-gray-500 hover:bg-[#c3ebfa] transition-all"
+              >
+                <Image src={item.icon} alt={item.label} width={16} height={16} />
+                <span className="text-sm hidden lg:block">{item.label}</span>
+              </button>
+            ) : (
+              <Link
+                href={item.href}
+                key={item.label}
+                className="flex items-center justify-center lg:justify-start gap-3 px-3 py-2 md:px-2 rounded-md text-gray-500 hover:bg-[#c3ebfa] transition-all"
+              >
+                <Image src={item.icon} alt={item.label} width={16} height={16} />
+                <span className="text-sm hidden lg:block">{item.label}</span>
+              </Link>
+            )
+          )}
         </div>
       ))}
     </div>

@@ -102,12 +102,15 @@ export default function SignUpForm() {
             <div className="input-group">
               <input
                 type="text"
-                placeholder="Nom et prénom"
+                placeholder="Nom et prénom "
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 className="form-input"
                 required
               />
+              {!fullName && (
+                <span className="orange-star">*</span>
+              )}
             </div>
             {/* Input Email */}
             <div className="input-group">
@@ -119,6 +122,9 @@ export default function SignUpForm() {
                 className="form-input"
                 required
               />
+              {!email && (
+                <span className="orange-star">*</span>
+              )}
             </div>
             {/* Input Mot de passe */}
             <div className="input-group">
@@ -201,20 +207,7 @@ export default function SignUpForm() {
             </div>
 
             {/* Checkbox Conditions */}
-            {/* <div className="terms-checkbox">
-              <input
-                type="checkbox"
-                checked={acceptedTerms}
-                onChange={(e) => setAcceptedTerms(e.target.checked)}
-                required
-              />
-              <label>
-                J&apos;accepte les{" "}
-                <Link href="#">conditions d&apos;utilisation</Link>{" "}
-                de Dourbia
-              </label>
-            </div> */}
-            <div className="terms-checkbox" onClick={() => setAcceptedTerms(!acceptedTerms)}>
+            {/* <div className="terms-checkbox" onClick={() => setAcceptedTerms(!acceptedTerms)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="36"
@@ -223,12 +216,10 @@ export default function SignUpForm() {
                 fill="none"
                 className="checkbox-svg"
               >
-                {/* Case non cochée */}
                 <path
                   d="M27.492 2.0166H8.64581C4.92851 2.0166 1.91504 5.03007 1.91504 8.74737V27.5935C1.91504 31.3108 4.92851 34.3243 8.64581 34.3243H27.492C31.2093 34.3243 34.2227 31.3108 34.2227 27.5935V8.74737C34.2227 5.03007 31.2093 2.0166 27.492 2.0166Z"
                   stroke="#777272"
                 />
-                {/* Case cochée - visible seulement quand acceptedTerms est true */}
                 {acceptedTerms && (
                   <path
                     d="M27.492 2.0166H8.64581C4.92851 2.0166 1.91504 5.03007 1.91504 8.74737V27.5935C1.91504 31.3108 4.92851 34.3243 8.64581 34.3243H27.492C31.2093 34.3243 34.2227 31.3108 34.2227 27.5935V8.74737C34.2227 5.03007 31.2093 2.0166 27.492 2.0166Z"
@@ -241,7 +232,35 @@ export default function SignUpForm() {
                 <Link href="#">conditions d&apos;utilisation</Link>{" "}
                 de Dourbia
               </label>
+            </div> */}
+            <div className="terms-checkbox" onClick={() => setAcceptedTerms(!acceptedTerms)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="31"
+                height="30"
+                viewBox="0 0 31 30"
+                fill="none"
+              >
+                {/* Carré de base */}
+                <path
+                  d="M27.1699 10.4524V29.9997H0V3.58008H21.4242L18.5984 6.83009H3.34231V26.7379H23.8155V14.3287L27.1699 10.4524Z"
+                  fill="#C7C2C2"
+                />
+
+                {/* Tick qui s'affiche seulement si acceptedTerms === true */}
+                {acceptedTerms && (
+                  <path
+                    d="M14.7716 21.9375L6.60425 13.9957L10.296 10.4059L14.4435 14.4419L26.9619 0L30.9575 3.27069L14.7716 21.9375Z"
+                    fill="#C7C2C2"
+                  />
+                )}
+              </svg>
+              <label htmlFor="remember">J&apos;accepte les{" "}
+                <Link href="#">conditions d&apos;utilisation</Link>{" "}
+                de Dourbia
+              </label>
             </div>
+
             {/* Bouton d'inscription */}
             <button type="submit" className="signup-button">
               S'inscrire
