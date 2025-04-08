@@ -4,6 +4,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     min-height: 100vh;
     display: flex;
@@ -11,6 +12,7 @@ body {
     align-items: center;
     background: linear-gradient(0deg, #FEFEFE 0%, #FEFEFE 100%), #FFF;
 }
+
 /* Main container */
 .emailContainer {
     padding: 20px 40px;
@@ -19,13 +21,14 @@ body {
     flex-shrink: 0;
     border-radius: 1.375rem;
     background: #FFF;
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.29);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.18);
     margin-bottom: 4.25rem;
     margin-top: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 /* Logo */
 .emaillogo {
     margin: 0 auto;
@@ -34,16 +37,18 @@ body {
     height: 5.875rem;
     flex-shrink: 0;
 }
+
 /* Title */
 .emailtitle {
     margin-bottom: 3.9rem;
     color: #FB7822;
     font-family: ABeeZee;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
+
 /* Description text */
 .emaildescription {
     margin-bottom: 3.9rem;
@@ -55,39 +60,50 @@ body {
     font-weight: 400;
     line-height: normal;
 }
+
 /* Formulaire unifié avec styles fixes */
 .emailform {
     width: 30.5rem;
     display: flex;
     flex-direction: column;
-    gap: 2.5rem; /* Espace entre l'input et le bouton */
+    gap: 2.5rem;
+    /* Espace entre l'input et le bouton */
     align-items: center;
     position: relative;
     padding: 0;
 }
+
 /* Input container */
 .emailInput {
-    width: 100%;
-    height: 3.5rem;
+    width: 30rem;
+    height: 3.3rem;
     border-radius: 0.9375rem;
     border: 1px solid #5ED8F2;
     padding: 0.9rem 2rem;
     color: #718096;
     font-family: ABeeZee;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 400;
     background: #FFF;
     outline: none;
 }
+.emailInput::placeholder {
+    color: #718096;
+    font-family: ABeeZee;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
 /* Button */
 .emailbutton {
-    width: 15rem;
+    width: 14rem;
     height: 3rem;
     padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.5625rem;
+    /* gap: 0.5625rem; */
     border-radius: 1.25rem;
     background: #FB7822;
     color: #FFF;
@@ -97,14 +113,18 @@ body {
     text-transform: capitalize;
     border: none;
     cursor: pointer;
+    margin-top: 2.5rem;
 }
+
 .emailbutton:hover {
     background-color: #e66a1a;
 }
+
 .emailbutton:disabled {
     opacity: 0.7;
     cursor: not-allowed;
 }
+
 /* Error message */
 .error-message {
     color: #ef4444;
@@ -112,6 +132,7 @@ body {
     font-size: 14px;
     text-align: center;
 }
+
 /* Responsive adjustments */
 @media (max-width: 40rem) {
     .emailContainer {

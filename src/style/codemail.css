@@ -21,7 +21,7 @@ body {
     flex-shrink: 0;
     border-radius: 1.375rem;
     background: #FFF;
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.29);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.18);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,19 +40,18 @@ body {
 .code-title {
     color: #FB7822;
     font-family: ABeeZee;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     margin-bottom: 4rem;
 }
-
 /* Description text */
 .code-description {
     color: #474747;
     text-align: center;
     font-family: ABeeZee;
-    font-size: 0.9375rem;
+    font-size: 0.9rem;
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
@@ -62,19 +61,18 @@ body {
 /* Code inputs container */
 .code-inputs {
     display: flex;
-    width: 24.375rem;
     height: 4.45313rem;
     justify-content: center;
     align-items: center;
-    gap: 0.875rem;
+    gap: 0.7rem;
     flex-shrink: 0;
     margin-bottom: 4rem;
 }
 
 /* Individual code input */
 .code-input {
-    width: 2.424rem;
-    height: 2.8125rem;
+    width: 2rem;
+    height: 2.4rem;
     text-align: center;
     background: transparent;
     border-radius: 0.3125rem;
@@ -112,14 +110,12 @@ body {
     border: none;
     cursor: pointer;
     transition: opacity 0.2s ease;
-    gap: 0.69rem;
+    gap: 0.6rem;
 }
-
 .resend-button:hover {
     text-decoration: underline;
     opacity: 0.8;
 }
-
 /* Next button */
 .next-button {
     color: #5ED8F2;
@@ -135,22 +131,21 @@ body {
     border: none;
     cursor: pointer;
     transition: opacity 0.2s ease;
-    gap: 0.69rem;
+    gap: 0.5rem;
+    margin-left: 1rem;
 }
 .next-button:hover {
     text-decoration: underline;
     opacity: 0.8;
 }
-
 .next-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-
 /* Error message */
 .error-message {
-    color: #ef4444;
+    color: #F00;
     margin-bottom: 1rem;
     font-size: 0.875rem;
     text-align: center;
