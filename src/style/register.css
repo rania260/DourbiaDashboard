@@ -26,13 +26,15 @@ html {
     border-radius: 0 1.25rem 1.25rem 0;
     overflow: hidden;
 }
+
 .image-container {
     position: relative;
     width: 100%;
     height: 100%;
     flex-shrink: 0;
-aspect-ratio: 65/74;
+    aspect-ratio: 65/74;
 }
+
 /* .overlay {
     position: relative;
     inset: 0;
@@ -49,6 +51,7 @@ aspect-ratio: 65/74;
     height: 16.375rem;
     flex-shrink: 0;
 }
+
 .title-text {
     color: #FFF;
     text-align: center;
@@ -63,10 +66,12 @@ aspect-ratio: 65/74;
     left: 9rem;
     top: 26rem;
 }
+
 /* Spacer */
 .spacer {
     width: 5rem;
 }
+
 /* Right panel */
 .right-panel {
     position: relative;
@@ -87,6 +92,7 @@ aspect-ratio: 65/74;
     flex-shrink: 0;
     position: relative;
 }
+
 /* Style pour le logo SVG */
 .right-panel .logo {
     position: absolute;
@@ -98,6 +104,7 @@ aspect-ratio: 65/74;
     height: 6.3125rem;
     flex-shrink: 0;
 }
+
 .form-title {
     color: #60D8F4;
     font-family: Actor;
@@ -110,21 +117,62 @@ aspect-ratio: 65/74;
     flex-shrink: 0;
     margin-top: 7rem;
 }
+
 .orange-star {
     color: #FB7822;
+    font-family: Actor;
     font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
     position: absolute;
-    top: 50%; 
-    right: 24rem; 
-    transform: translateY(-50%); 
+    top: 50%;
+    right: 25.3rem;
+    transform: translateY(-50%);
 }
-
+.orange-star-email {
+    color: #FB7822;
+    font-family: Actor;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 50%;
+    right: 25.8rem;
+    transform: translateY(-50%);
+}
+.orange-star-password {
+    color: #FB7822;
+    font-family: Actor;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 50%;
+    right: 26.4rem;
+    transform: translateY(-50%);
+}
+.orange-star-password-confirm {
+    color: #FB7822;
+    font-family: Actor;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 50%;
+    right: 21.9rem;
+    transform: translateY(-50%);
+}
 /* Form elements */
 .auth-form {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
+
 /* Form elements */
 .input-group {
     position: relative;
@@ -133,6 +181,7 @@ aspect-ratio: 65/74;
     width: 100%;
     align-items: center;
 }
+
 .form-input {
     height: 2.7rem;
     flex-shrink: 0;
@@ -141,9 +190,10 @@ aspect-ratio: 65/74;
     box-shadow: 0 0.25rem 0.375rem -0.0625rem rgba(0, 0, 0, 0.1);
     border-radius: 0.9375rem;
     padding: 0.75rem 1.44rem 0.63rem;
-    width: 32rem;;
+    width: 32rem;
+    ;
     color: #8F8F8F;
-    font-family: ABeeZee;
+    font-family: Actor;
     font-size: 1.25rem;
     font-style: normal;
     font-weight: 400;
@@ -155,7 +205,7 @@ aspect-ratio: 65/74;
 .form-input::placeholder {
     width: 12.9055rem;
     color: #8F8F8F;
-    font-family: ABeeZee;
+    font-family: Actor;
     font-size: 1rem;
     font-style: normal;
     font-weight: 400;
@@ -180,11 +230,13 @@ aspect-ratio: 65/74;
     height: 1rem;
     flex-shrink: 0;
 }
+
 .password-toggle svg {
     width: 1.25rem;
     height: 1rem;
     flex-shrink: 0;
 }
+
 .password-toggle:hover {
     opacity: 0.7;
 }

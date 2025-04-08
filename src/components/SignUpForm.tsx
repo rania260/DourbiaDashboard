@@ -123,7 +123,7 @@ export default function SignUpForm() {
                 required
               />
               {!email && (
-                <span className="orange-star">*</span>
+                <span className="orange-star-email">*</span>
               )}
             </div>
             {/* Input Mot de passe */}
@@ -136,6 +136,9 @@ export default function SignUpForm() {
                 className="form-input"
                 required
               />
+              {!password && (
+                <span className="orange-star-password">*</span>
+              )}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -164,6 +167,9 @@ export default function SignUpForm() {
                 className="form-input"
                 required
               />
+              {!confirmPassword && (
+                <span className="orange-star-password-confirm">*</span>
+              )}
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
