@@ -104,7 +104,6 @@ html {
     height: 6.3125rem;
     flex-shrink: 0;
 }
-
 .form-title {
     color: #60D8F4;
     font-family: Actor;
@@ -117,7 +116,6 @@ html {
     flex-shrink: 0;
     margin-top: 7rem;
 }
-
 .orange-star {
     color: #FB7822;
     font-family: Actor;
