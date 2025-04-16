@@ -78,6 +78,7 @@ const UsersList = () => {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,  
         },
+        credentials: 'include',
       });
       if (response.ok) {
         const data = await response.json();
@@ -107,13 +108,12 @@ const UsersList = () => {
   };
 
   const renderRow = (item: User) => {
-    const verification = item.emailVerifiedAt
-      ? `Oui, ${new Date(item.emailVerifiedAt).toLocaleDateString("fr-FR")}`
-      : "Non";
+    const verification = item.emailVerifiedAt ? "Oui" : "Non";
+
 
     const rowClassName = item.isBanned 
       ? "border-b border-gray-200 even:bg-slate-50 text-sm text-[#8F8F8F]" 
-      : "border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-orange-200";
+      : "border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-[#EBF2F6]";
 
     return (
       <tr key={item.id} className={rowClassName}>

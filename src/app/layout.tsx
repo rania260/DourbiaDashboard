@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import { ABeeZee } from "next/font/google";
 import { Actor } from "next/font/google";
 import { Montserrat } from "next/font/google";
-import Providers from "@/components/Providers";
 import { AuthProvider } from './context/auth-context'
 
 import "./globals.css";
@@ -64,7 +63,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${abeezee.variable} ${actor.variable} ${montserrat.variable} ${montserratLight.variable} ${montserratSemiBold.variable}`}>
       <body className={inter.className}>
       <AuthProvider>
-        <Providers>{children}</Providers>
+        {children}
         </AuthProvider>
       </body>
     </html>

@@ -80,33 +80,31 @@ export default function VerificationForm() {
     };
 
     const handleResendCode = async () => {
-        if (countdown > 0) {
-            setError(`Veuillez attendre ${countdown} secondes avant de demander un nouveau code`);
+        const email = localStorage.getItem('signupEmail');
+        if (!email) {
+            setError('Email non trouvé');
             return;
         }
-
-        setLoading(true);
-        setError("");
-
+    
         try {
-            const response = await fetch("http://localhost:8000/auth/verification-otp", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+            const response = await fetch('http://localhost:8000/auth/password/resend-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({ email }),
             });
-
+    
             const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Échec de l'envoi du code");
+    
+            if (response.ok) {
+                setError('');
+                alert(data.message || 'Nouveau code envoyé !');
+            } else {
+                setError(data.message || 'Erreur lors de l\'envoi du code');
             }
-
-            setError("Nouveau code envoyé avec succès !");
-            setCountdown(60);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Échec de l'envoi du code");
-        } finally {
-            setLoading(false);
+        } catch {
+            setError('Erreur lors de l\'envoi du code');
         }
     };
 

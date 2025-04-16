@@ -64,16 +64,23 @@ const menuItems = [
       },
       {
         icon: "/contributions.png",
-        label: "Gestion contributions des utilisateurs",
+        label: "Contributions des utilisateurs",
         href: "/admin/contributions",
         visible: ["admin"],
       },
       {
         icon: "/events.png",
-        label: "Gestion événements",
+        label: "Evénements",
         href: "/admin/events",
         visible: ["admin"],
       },
+      {
+        icon: "/contact.png",
+        label: "Contact Requests",
+        href: "/admin/contact-requests",
+        visible: ["admin"],
+      }
+      
     ],
   },
   {
@@ -106,8 +113,23 @@ const Menu = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "http://localhost:3000" }); // ou ton URL de page login
+    try {
+      const response = await fetch("http://localhost:8000/auth/logout", {
+        method: "POST",
+        credentials: "include", // ← important pour envoyer les cookies
+      });
+  
+      if (response.ok) {
+        // Redirige vers la page de connexion ou d'accueil
+        router.push("/"); // ou "/"
+      } else {
+        console.error("Erreur lors de la déconnexion");
+      }
+    } catch (error) {
+      console.error("Erreur réseau :", error);
+    }
   };
+  
 
   return (
     <div className="mt-4 text-xs">

@@ -1,28 +1,10 @@
-"use client";
-import { useEffect, useState } from 'react';
-import Image from "next/image"
+// Navbar.tsx
+'use client';
+import Image from "next/image";
+import { useAuth } from '../app/context/auth-context';
 
 const Navbar = () => {
-  const [userData, setUserData] = useState({ username: '', role: '' });
-
-  useEffect(() => {
-    const userStr = localStorage.getItem('user');
-    console.log("Données utilisateur récupérées:", userStr);
-    
-    if (userStr) {
-      try {
-        const user = JSON.parse(userStr);
-        console.log("Données parsées:", user);
-        
-        setUserData({
-          username: user.username,
-          role: user.role
-        });
-      } catch (error) {
-        console.error("Erreur lors du parsing:", error);
-      }
-    }
-  }, []);
+  const { user } = useAuth();
 
   return (
     <div className='flex items-center justify-between p-4'>
@@ -39,16 +21,23 @@ const Navbar = () => {
         </div>
         <div className='flex flex-col'>
           <span className="text-xs leading-3 font-medium">
-            {userData.username || 'Chargement...'}
+            {user?.username || 'Invité'}
           </span>
           <span className="text-[10px] text-gray-500 text-right">
-            {userData.role || 'Chargement...'}
+            {user?.role || 'Utilisateur'}
           </span>
         </div>
-        <Image src="/avatar.jpeg" alt="" width={36} height={36} className="rounded-full"/>
+        <Image 
+          src="/avatar.jpeg" 
+          alt={`Avatar de ${user?.username || 'Invité'}`} 
+          width={36} 
+          height={36} 
+          className="rounded-full"
+          title={`${user?.username || 'Invité'} (${user?.role || 'Utilisateur'})`}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

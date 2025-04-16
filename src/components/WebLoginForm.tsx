@@ -23,7 +23,8 @@ export default function SignInForm() {
 
   const handleGoogleSignIn = () => {
 
-    window.location.href = 'http://localhost:8000/auth/google';};
+    window.location.href = 'http://localhost:8000/auth/google';
+  };
   // Effet pour afficher le message de succès
   useEffect(() => {
     if (success) {
@@ -36,7 +37,7 @@ export default function SignInForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
-
+  
     try {
       const response = await fetch("http://localhost:8000/auth/signin", {
         method: "POST",
@@ -44,20 +45,22 @@ export default function SignInForm() {
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
+        credentials: 'include', // Important pour les cookies
         body: JSON.stringify({
           email: email.trim(),
           password: password
         }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify({
-          username: data.user.username,
-          role: data.user.role
-        }));
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("isLoggedIn", "true");
+  
+        // Update auth context
+        setIsLoggedIn(true);
+  
         router.push("/admin");
       } else {
         setErrorMessage(data.message || "Identifiants incorrects. Veuillez réessayer.");
@@ -159,7 +162,7 @@ export default function SignInForm() {
             </div>
 
             {/* Checkbox Se rappeler */}
-            <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
+            {/* <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="31"
@@ -179,12 +182,12 @@ export default function SignInForm() {
                 )}
               </svg>
               <label htmlFor="remember">Se rappeler de moi ?</label>
-            </div>
-            {/* <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
+            </div> */}
+            <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="31"
-                height="30"
+                width="28"
+                height="27"
                 viewBox="0 0 31 30"
                 fill="none"
               >
@@ -205,7 +208,7 @@ export default function SignInForm() {
                 )}
               </svg>
               <label htmlFor="remember">Se rappeler de moi ?</label>
-            </div> */}
+            </div>
             {/* Bouton Se Connecter */}
             <button type="submit" className="loginbutton">
               Se Connecter

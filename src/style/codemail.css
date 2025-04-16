@@ -15,47 +15,52 @@ body {
 
 /* Main container */
 .code-container {
-    padding: 20px 40px;
-    width: 35rem;
-    height: 45rem;
+    width: 45.4375rem;
+    height: 44.1875rem;
     flex-shrink: 0;
-    border-radius: 1.375rem;
+    border-radius: 0.9375rem;
     background: #FFF;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.18);
+    margin-bottom: 4.25rem;
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 2rem 0 4.25rem 0;
 }
 
 /* Logo */
 .code-logo {
+    margin-top: 3.56rem;
+    margin-bottom: 2.44rem;
     width: 6.4375rem;
     height: 5.875rem;
     flex-shrink: 0;
-    margin: 0 auto 5.25rem auto;
 }
 
 /* Title */
 .code-title {
     color: #FB7822;
     font-family: ABeeZee;
-    font-size: 1.75rem;
+    font-size: 2.5rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-bottom: 4rem;
+    margin-bottom: 2.81rem;
 }
+
 /* Description text */
 .code-description {
+    margin-bottom: 3.62rem;
     color: #474747;
     text-align: center;
     font-family: ABeeZee;
-    font-size: 0.9rem;
+    font-size: 1.25rem;
     font-style: normal;
     font-weight: 400;
-    line-height: 1.5;
-    margin-bottom: 2.38rem;
+    line-height: normal;
+    width: 23.5625rem;
+    height: 2.69956rem;
+    flex-shrink: 0;
 }
 
 /* Code inputs container */
@@ -64,15 +69,15 @@ body {
     height: 4.45313rem;
     justify-content: center;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.88rem;
     flex-shrink: 0;
-    margin-bottom: 4rem;
+    margin-bottom: 4.19rem;
 }
 
 /* Individual code input */
 .code-input {
-    width: 2rem;
-    height: 2.4rem;
+    width: 2.42438rem;
+    height: 2.8125rem;
     text-align: center;
     background: transparent;
     border-radius: 0.3125rem;
@@ -92,7 +97,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3.75rem;
+    gap: 4.19rem;
     width: 100%;
 }
 
@@ -100,7 +105,7 @@ body {
 .resend-button {
     color: #002863;
     font-family: Inter;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -112,10 +117,12 @@ body {
     transition: opacity 0.2s ease;
     gap: 0.6rem;
 }
+
 .resend-button:hover {
     text-decoration: underline;
     opacity: 0.8;
 }
+
 /* Next button */
 .next-button {
     color: #5ED8F2;
@@ -134,10 +141,12 @@ body {
     gap: 0.5rem;
     margin-left: 1rem;
 }
+
 .next-button:hover {
     text-decoration: underline;
     opacity: 0.8;
 }
+
 .next-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;

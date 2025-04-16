@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Eye, EyeOff } from "lucide-react";
 import '../../../style/forgot-password.css';
 
 const ForgotPassword = () => {
