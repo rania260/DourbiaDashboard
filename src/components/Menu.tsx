@@ -77,7 +77,7 @@ const menuItems = [
       {
         icon: "/contact.png",
         label: "Contact Requests",
-        href: "/admin/contact-requests",
+        href: "/list/contact",
         visible: ["admin"],
       }
       
