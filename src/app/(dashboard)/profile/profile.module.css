@@ -1,0 +1,175 @@
+/* profile.module.css */
+.mainContent {
+  background: white;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.formTitle {
+  color: #777272;
+  font-family: Actor;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.avatarSection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.avatarWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatarContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.avatarImage {
+  width: 117px;
+  height: 116px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+}
+
+.avatarUploadLabel {
+  position: absolute;
+  background: #5ED8F2;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  right: 0;
+  bottom: 0;
+}
+
+.avatarUploadLabel:hover {
+  background: #4ec1db;
+}
+
+.avatarUploadInput {
+  display: none;
+}
+
+.formInput {
+  width: 100%;
+  height: 2.875rem;
+  border-radius: 0.9375rem;
+  background: #FFF;
+  box-shadow: 0 0.25rem 0.375rem -0.0625rem rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 1.44rem 0.63rem;
+  margin-bottom: 0.81rem;
+  color: #8F8F8F;
+  font-family: Actor;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.formInput::placeholder {
+  color: #8F8F8F;
+  font-family: Actor;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  opacity: 0.5;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #5ED8F2;
+  box-shadow: 0 0 0 3px rgba(94, 216, 242, 0.1);
+}
+
+.passwordInputContainer {
+  position: relative;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.passwordToggle svg {
+  width: 22px;
+  height: 18px;
+}
+
+.inputHint {
+  display: block;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.inputHintValid {
+  color: #4CAF50 !important;
+}
+
+.inputHintInvalid {
+  color: #f44336 !important;
+}
+
+.submitButton {
+  width: 16rem;
+  height: 3.1875rem;
+  border-radius: 1.25rem;
+  background: #5ED8F2;
+  margin: 1.5rem auto 0;
+  color: #FFF;
+  font-family: ABeeZee;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  display: block;
+  border: none;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background: #4ec1db;
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 1.5rem;
+  }
+
+  .formTitle {
+    font-size: 1rem;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
+}

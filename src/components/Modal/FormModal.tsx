@@ -2,10 +2,10 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
-import Toast from "./Toast";
+import Toast from "../Toast";
 
 
-const UserForm = dynamic(() => import("./forms/UserForm"), { loading: () => <p>Loading...</p> });
+const UserForm = dynamic(() => import("../forms/UserForm"), { loading: () => <p>Loading...</p> });
 
 const FormModal = ({
   table,
@@ -25,6 +25,7 @@ const FormModal = ({
     | "subscription"
     | "contribution"
     | "event"
+    | "contacts"
   type: "create" | "edit" | "delete" | "ban";
   data?: any;
   id?: number;

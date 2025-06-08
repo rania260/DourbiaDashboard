@@ -18,6 +18,8 @@ export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -213,32 +215,6 @@ export default function SignUpForm() {
             </div>
 
             {/* Checkbox Conditions */}
-            {/* <div className="terms-checkbox" onClick={() => setAcceptedTerms(!acceptedTerms)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-                fill="none"
-                className="checkbox-svg"
-              >
-                <path
-                  d="M27.492 2.0166H8.64581C4.92851 2.0166 1.91504 5.03007 1.91504 8.74737V27.5935C1.91504 31.3108 4.92851 34.3243 8.64581 34.3243H27.492C31.2093 34.3243 34.2227 31.3108 34.2227 27.5935V8.74737C34.2227 5.03007 31.2093 2.0166 27.492 2.0166Z"
-                  stroke="#777272"
-                />
-                {acceptedTerms && (
-                  <path
-                    d="M27.492 2.0166H8.64581C4.92851 2.0166 1.91504 5.03007 1.91504 8.74737V27.5935C1.91504 31.3108 4.92851 34.3243 8.64581 34.3243H27.492C31.2093 34.3243 34.2227 31.3108 34.2227 27.5935V8.74737C34.2227 5.03007 31.2093 2.0166 27.492 2.0166Z"
-                    fill="#777272"
-                  />
-                )}
-              </svg>
-              <label>
-                J&apos;accepte les{" "}
-                <Link href="#">conditions d&apos;utilisation</Link>{" "}
-                de Dourbia
-              </label>
-            </div> */}
             <div className="terms-checkbox" onClick={() => setAcceptedTerms(!acceptedTerms)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -248,10 +224,8 @@ export default function SignUpForm() {
                 fill="none"
               >
                 {/* Carré de base */}
-                <path
-                  d="M27.1699 10.4524V29.9997H0V3.58008H21.4242L18.5984 6.83009H3.34231V26.7379H23.8155V14.3287L27.1699 10.4524Z"
-                  fill="#C7C2C2"
-                />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3.37699 15.8499V23.4009H24.0656V10.8612L24.0786 10.8462V3.29518L3.38997 3.29518L3.38997 15.8349L3.37699 15.8499ZM27.4554 26.6966V26.697H-0.000488281V-0.000616963H0.000210349L0.000210349 -0.000976562L27.4561 -0.000973273L27.4561 26.6966H27.4554Z" fill="#C7C2C2" />
+
 
                 {/* Tick qui s'affiche seulement si acceptedTerms === true */}
                 {acceptedTerms && (

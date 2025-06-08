@@ -32,12 +32,12 @@ export default function SignInForm() {
       setTimeout(() => setShowSuccess(false), 3000);
     }
   }, [success]);
-  
+
   // Gestion de la soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
-  
+
     try {
       const response = await fetch("http://localhost:8000/auth/signin", {
         method: "POST",
@@ -51,16 +51,16 @@ export default function SignInForm() {
           password: password
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("isLoggedIn", "true");
-  
+
         // Update auth context
         setIsLoggedIn(true);
-  
+
         router.push("/admin");
       } else {
         setErrorMessage(data.message || "Identifiants incorrects. Veuillez réessayer.");
@@ -162,7 +162,7 @@ export default function SignInForm() {
             </div>
 
             {/* Checkbox Se rappeler */}
-            {/* <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
+            <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="31"
@@ -170,10 +170,8 @@ export default function SignInForm() {
                 viewBox="0 0 31 30"
                 fill="none"
               >
-                <path
-                  d="M27.1699 10.4524V29.9997H0V3.58008H21.4242L18.5984 6.83009H3.34231V26.7379H23.8155V14.3287L27.1699 10.4524Z"
-                  fill="#C7C2C2"
-                />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3.37699 15.8499V23.4009H24.0656V10.8612L24.0786 10.8462V3.29518L3.38997 3.29518L3.38997 15.8349L3.37699 15.8499ZM27.4554 26.6966V26.697H-0.000488281V-0.000616963H0.000210349L0.000210349 -0.000976562L27.4561 -0.000973273L27.4561 26.6966H27.4554Z" fill="#C7C2C2" />
+
                 {rememberMe && (
                   <path
                     d="M14.7716 21.9375L6.60425 13.9957L10.296 10.4059L14.4435 14.4419L26.9619 0L30.9575 3.27069L14.7716 21.9375Z"
@@ -182,34 +180,9 @@ export default function SignInForm() {
                 )}
               </svg>
               <label htmlFor="remember">Se rappeler de moi ?</label>
-            </div> */}
-            <div className="rememberme" onClick={() => setRememberMe(!rememberMe)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="27"
-                viewBox="0 0 31 30"
-                fill="none"
-              >
-                <path
-                  d="M1 1H30V29H1V1Z"
-                  fill="#fff"
-                  stroke="#C7C2C2"
-                  strokeWidth="2"
-                />
-                {rememberMe && (
-                  <path
-                    d="M7 15L13 21L24 8"
-                    stroke="#C7C2C2"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                )}
-              </svg>
-              <label htmlFor="remember">Se rappeler de moi ?</label>
             </div>
-            {/* Bouton Se Connecter */}
+
+
             <button type="submit" className="loginbutton">
               Se Connecter
             </button>

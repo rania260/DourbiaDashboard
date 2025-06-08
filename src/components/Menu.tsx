@@ -24,59 +24,71 @@ const menuItems = [
         icon: "/users.png",
         label: "Gestion Utilisateur",
         href: "/list/users",
+        visible: ["ADMIN"],
+      },
+      {
+        icon: "/users.png",
+        label: "Gestion Partenaire",
+        href: "/list/partenaire",
+        visible: ["admin"],
+      },
+      {
+        icon: "/users.png",
+        label: "Gestion Expert",
+        href: "/list/expert",
         visible: ["admin"],
       },
       {
         icon: "/destination.jpg",
         label: "Gestion Destinations",
-        href: "/admin/destinations",
+        href: "/list/destinations",
         visible: ["admin"],
       },
       {
         icon: "/monument.jpg",
         label: "Gestion Monuments",
-        href: "/admin/monuments",
+        href: "/list/monuments",
         visible: ["admin"],
       },
       {
         icon: "/tours.png",
         label: "Gestion Circuits",
-        href: "/admin/tours",
+        href: "/list/tours",
         visible: ["admin"],
       },
       {
         icon: "/content.png",
         label: "Gestion Contenu",
-        href: "/admin/content",
+        href: "/list/content",
         visible: ["admin"],
       },
       {
         icon: "/packages.png",
         label: "Gestion Pack",
-        href: "/admin/packages",
+        href: "/list/packages",
         visible: ["admin"],
       },
       {
         icon: "/subscriptions.png",
         label: "Gestion Abonnements",
-        href: "/admin/subscriptions",
+        href: "/list/subscriptions",
         visible: ["admin"],
       },
       {
         icon: "/contributions.png",
-        label: "Contributions des utilisateurs",
-        href: "/admin/contributions",
+        label: "Blog",
+        href: "/list/blog",
         visible: ["admin"],
       },
       {
         icon: "/events.png",
-        label: "Evénements",
-        href: "/admin/events",
+        label: "Nos références",
+        href: "/list/reference",
         visible: ["admin"],
       },
       {
         icon: "/contact.png",
-        label: "Contact Requests",
+        label: "Contacts",
         href: "/list/contact",
         visible: ["admin"],
       }
@@ -103,7 +115,7 @@ const menuItems = [
         label: "Déconnexion",
         href: "#",
         visible: ["admin"],
-        isLogout: true, // ← On marque cette ligne comme spéciale
+        isLogout: true, 
       },
     ],
   },
@@ -116,11 +128,10 @@ const Menu = () => {
     try {
       const response = await fetch("http://localhost:8000/auth/logout", {
         method: "POST",
-        credentials: "include", // ← important pour envoyer les cookies
+        credentials: "include", 
       });
   
       if (response.ok) {
-        // Redirige vers la page de connexion ou d'accueil
         router.push("/"); // ou "/"
       } else {
         console.error("Erreur lors de la déconnexion");

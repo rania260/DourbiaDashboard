@@ -1,538 +1,178 @@
-// // "use client";
+"use client";
 
-// // import { useState, useEffect } from "react";
-// // import Link from "next/link";
-// // import Image from "next/image";
-// // import { useRouter, useSearchParams } from "next/navigation";
-// // import { Eye, EyeOff } from "lucide-react";
-// // import { FcGoogle } from "react-icons/fc";
-// // import { signIn, useSession } from "next-auth/react";
-// // import { FaFacebook } from "react-icons/fa";
-// // import "../style/login.css";
+import { useEffect, useState } from "react";
+import Pagination from "@/components/Pagination";
+import Table from "@/components/Table";
+import TableSearch from "@/components/TableSearch";
+import Image from "next/image";
+import CircuitModal from "@/components/Modal/CircuitModal";
+import ViewCircuitModal from "@/components/ViewDetails/ViewCircuitModal";
 
-// // export default function SignInForm() {
-// //   const router = useRouter();
-// //   const searchParams = useSearchParams();
-// //   const { data: session } = useSession();
-// //   const success = searchParams.get("success");
+type Circuit = {
+  id: number;
+  nom_circuit: string;
+  description_thematique: string;
+  nbr_etape: number;
+  kilometrage: number | string; 
+  duree_heures: number;
+  duree_minutes: number;
+  depart_longitude_circuit: number | string;
+  depart_latitude_circuit: number | string;
+  img: string;
+  video?: string;
+  created_at: string;
+  updated_at: string;
+};
 
-// //   const [showPassword, setShowPassword] = useState(false);
-// //   const [showSuccess, setShowSuccess] = useState(false);
-// //   const [email, setEmail] = useState("");
-// //   const [password, setPassword] = useState("");
-// //   const [rememberMe, setRememberMe] = useState(false);
-// //   const [errorMessage, setErrorMessage] = useState("");
+const columns = [
+  { header: "Informations", accessor: "info" },
+  { header: "Description", accessor: "description" },
+  { header: "Étapes", accessor: "etapes" },
+  { header: "Distance (km)", accessor: "distance" },
+  { header: "Durée", accessor: "duree" },
+  { header: "Point de départ", accessor: "depart" },
+  { header: "Actions", accessor: "action" },
+];
 
-// //   useEffect(() => {
-// //     if (success) {
-// //       setShowSuccess(true);
-// //       setTimeout(() => setShowSuccess(false), 3000);
-// //     }
-// //   }, [success]);
+const CircuitsList = () => {
+  const [circuits, setCircuits] = useState<Circuit[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedCircuit, setSelectedCircuit] = useState<Circuit | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-// //   useEffect(() => {
-// //     const handleGoogleAuth = async () => {
-// //       if (session?.user) {
-// //         try {
-// //           const response = await fetch("http://localhost:8000/auth/google", {
-// //             method: "POST",
-// //             headers: {
-// //               "Content-Type": "application/json",
-// //             },
-// //             body: JSON.stringify({
-// //               email: session.user.email,
-// //               name: session.user.name,
-// //               googleId: session.user.id,
-// //               idToken: session.user.accessToken,
-// //             }),
-// //           });
+  const fetchCircuits = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/circuit/getAll", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        credentials: "include",
+      });
 
-// //           const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
+        const sortedData = [...data].sort((a, b) => a.id - b.id);
+        setCircuits(sortedData);
+      } else {
+        console.error("Failed to fetch circuits");
+      }
+    } catch (error) {
+      console.error("Error fetching circuits:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-// //           if (response.ok) {
-// //             localStorage.setItem("token", data.token);
-// //             localStorage.setItem("user", JSON.stringify({
-// //               username: data.user.username,
-// //               role: data.user.role
-// //             }));
-// //             router.push("/admin");
-// //           }
-// //         } catch (error) {
-// //           console.error("Erreur Google Auth:", error);
-// //         }
-// //       }
-// //     };
+  useEffect(() => {
+    fetchCircuits();
+  }, []);
 
-// //     if (session) {
-// //       handleGoogleAuth();
-// //     }
-// //   }, [session, router]);
+  const indexOfLastCircuit = currentPage * itemsPerPage;
+  const indexOfFirstCircuit = indexOfLastCircuit - itemsPerPage;
+  const currentCircuits = circuits.slice(indexOfFirstCircuit, indexOfLastCircuit);
+  const totalPages = Math.ceil(circuits.length / itemsPerPage);
 
-// //   const handleSubmit = async (e: React.FormEvent) => {
-// //     e.preventDefault();
-// //     setErrorMessage("");
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
-// //     try {
-// //       const response = await fetch("http://localhost:8000/auth/signin", {
-// //         method: "POST",
-// //         headers: {
-// //           "Content-Type": "application/json",
-// //         },
-// //         body: JSON.stringify({ email, password }),
-// //       });
+  const formatDuration = (heures: number, minutes: number) => {
+    return `${heures}h${minutes.toString().padStart(2, '0')}`;
+  };
 
-// //       const data = await response.json();
+  const renderRow = (item: Circuit, index: number) => {
+    const kilometrageNum = parseFloat(item.kilometrage as string);
+    const lat = parseFloat(item.depart_latitude_circuit as string);
+    const lon = parseFloat(item.depart_longitude_circuit as string);
 
-// //       if (response.ok) {
-// //         localStorage.setItem("token", data.token);
-// //         localStorage.setItem("user", JSON.stringify({
-// //           username: data.user.username,
-// //           role: data.user.role
-// //         }));
-        
-// //         router.push("/admin");
-// //       } else {
-// //         setErrorMessage(data.message || "Identifiants incorrects.");
-// //       }
-// //     } catch (error) {
-// //       console.error("Erreur complète:", error);
-// //       setErrorMessage("Erreur de connexion. Vérifiez votre connexion réseau.");
-// //     }
-// //   };
+    return (
+      <tr key={item.id ?? `row-${index}`} className="border-b border-gray-200 even:bg-slate-50 hover:bg-[#EBF2F6] text-sm">
+        <td className="flex items-center gap-4 p-4">
+          <div className="relative w-12 h-12 rounded-md overflow-hidden">
+            <Image
+              src={item.img && item.img.trim() !== "" ? `/images/${item.img}` : "/placeholder.jpg"}
+              alt={item.nom_circuit}
+              fill
+              className="object-cover"
+            />
 
-// //   const handleGoogleSignIn = async () => {
-// //     try {
-// //       await signIn("google");
-// //     } catch (error) {
-// //       console.error("Erreur de connexion Google:", error);
-// //     }
-// //   };
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-gray-900 truncate">{item.nom_circuit}</h3>
+          </div>
+        </td>
 
-// //   return (
-// //     <main className="min-h-screen bg-white grid grid-cols-[1fr_auto_1fr] items-stretch overflow-hidden">
-// //       {/* Message de succès */}
-// //       {showSuccess && (
-// //         <div className="absolute top-5 right-5 bg-green-500 text-white p-4 rounded-lg shadow-lg transition-opacity duration-500">
-// //           Enregistrement réussi !
-// //         </div>
-// //       )}
-      
-// //       {/* Partie Gauche - Image */}
-// //       <div className="relative border border-gray-300 backdrop-blur-sm shadow-lg rounded-r-[20px] overflow-hidden">
-// //         <div className="w-full h-full relative">
-// //           <Image
-// //             src="/image11.png"
-// //             alt="Background Dourbia"
-// //             layout="fill"
-// //             objectFit="cover"
-// //             className="w-full h-full"
-// //           />
-// //           <div className="absolute inset-0 bg-black/20 h-full p-8">
-// //             <div className="absolute left-[164px] top-[93px]">
-// //               <Image
-// //                 src="/logo1.png"
-// //                 alt="Logo Dourbia"
-// //                 width={340}
-// //                 height={210}
-// //               />
-// //             </div>
-// //             <h1 className="absolute left-[177px] top-[316px] text-[55px] font-extrabold text-white leading-[85px] font-['Inter']">
-// //               ACCÉDEZ À <br />
-// //               <span>DOURBIA !</span>
-// //             </h1>
-// //           </div>
-// //         </div>
-// //       </div>
-// //       <div className="w-20"></div>
+        <td className="p-4">
+          {item.description_thematique
+            ? item.description_thematique.split(" ").slice(0, 5).join(" ") + (item.description_thematique.split(" ").length > 5 ? "..." : "")
+            : "-"
+          }
+        </td>
 
-// //       {/* Partie Droite - Formulaire */}
-// //       <div className="relative flex justify-center items-center border border-gray-300 backdrop-blur-sm shadow-lg rounded-l-[20px] overflow-hidden">
-// //         <div className="w-full max-w-md px-4 py-8 pt-8 pb-8 flex flex-col items-center">
-// //           <Image
-// //             src="/logo4.png"
-// //             alt="Logo Dourbia"
-// //             width={90}
-// //             height={80}
-// //             className="absolute top-[15px]"
-// //           />
+        <td className="p-4">{item.nbr_etape}</td>
 
-// //           <form onSubmit={handleSubmit} className="w-full">
-// //             {/* Input Email */}
-// //             <div className="absolute top-[168px] left-[105px]">
-// //               <input
-// //                 type="email"
-// //                 placeholder="Adresse e-mail"
-// //                 value={email}
-// //                 onChange={(e) => setEmail(e.target.value)}
-// //                 className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 leading-auto font-abeezee"
-// //                 required
-// //               />
-// //             </div>
+        <td className="p-4">
+          {isNaN(kilometrageNum) ? "-" : `${kilometrageNum.toFixed(1)} km`}
+        </td>
 
-// //             {/* Input Mot de passe */}
-// //             <div className="absolute top-[235px] left-[105px]">
-// //               <input
-// //                 type={showPassword ? "text" : "password"}
-// //                 placeholder="Mot de passe"
-// //                 value={password}
-// //                 onChange={(e) => setPassword(e.target.value)}
-// //                 className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 pr-10 focus:border-[#8F8F8F] outline-none text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-// //                 required
-// //               />
-// //               <button
-// //                 type="button"
-// //                 onClick={() => setShowPassword(!showPassword)}
-// //                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-// //               >
-// //                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-// //               </button>
-// //             </div>
+        <td className="p-4">{formatDuration(item.duree_heures, item.duree_minutes)}</td>
 
-// //             {/* Checkbox Se rappeler */}
-// //             <div className="absolute top-[285px] left-[120px] flex items-center">
-// //               <input
-// //                 type="checkbox"
-// //                 checked={rememberMe}
-// //                 onChange={(e) => setRememberMe(e.target.checked)}
-// //                 className="h-[30px] w-[30.96px] border-2 border-[#C7C2C2] text-[#C7C2C2] focus:ring-0"
-// //                 id="remember"
-// //               />
-// //               <label htmlFor="remember" className="text-[12px] font-abeezee text-[#C7C2C2] ml-2">
-// //                 Se rappeler de moi ?
-// //               </label>
-// //             </div>
+        <td className="p-4">
+          {isNaN(lat) || isNaN(lon) ? "-" : `${lat.toFixed(4)}, ${lon.toFixed(4)}`}
+        </td>
 
-// //             {/* Bouton Se Connecter */}
-// //             <div className="absolute top-[329px] left-[230px]">
-// //               <button
-// //                 type="submit"
-// //                 className="w-[200px] h-[37px] bg-[#5ED8F2] text-white rounded-[15px] py-3 text-l opacity-100 hover:bg-[#4AC0D8] font-abeezee flex justify-center items-center"
-// //               >
-// //                 Se Connecter
-// //               </button>
-// //             </div>
+        <td className="p-4">
+          <div className="flex items-center justify-end gap-2">
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+              onClick={() => setSelectedCircuit(item)}
+            >
+              <Image src="/view.png" alt="Voir" width={16} height={16} />
+            </button>
+            <CircuitModal type="edit" id={item.id} data={item} onSuccess={fetchCircuits} />
+            <CircuitModal type="delete" id={item.id} onSuccess={fetchCircuits} />
+          </div>
+        </td>
+      </tr>
+    );
+  };
 
-// //             {/* Mot de passe oublié */}
-// //             <div className="absolute top-[385px] left-[105px] w-[453px] text-center">
-// //               <Link href="/email-page" className="text-[16px] text-[#002863] font-abeezee underline">
-// //                 Mot de passe oublié ?
-// //               </Link>
-// //             </div>
+  return (
+    <>
+      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+        <div className="flex items-center justify-between">
+          <h1 className="hidden md:block text-lg font-semibold">Tous les circuits</h1>
+          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+            <TableSearch />
+            <div className="flex items-center gap-4 self-end">
+              <CircuitModal type="create" onSuccess={fetchCircuits} />
+            </div>
+          </div>
+        </div>
 
-// //             <div className="absolute top-[426px] left-1/2 transform -translate-x-1/2 w-[290px] flex items-center">
-// //               <div className="flex-1 border-t border-[#707070] opacity-35"></div>
-// //               <span className="px-3 text-[#B1B1B1] text-[10px] font-actor">OU</span>
-// //               <div className="flex-1 border-t border-[#707070] opacity-35"></div>
-// //             </div>
+        {loading ? (
+          <div>Chargement...</div>
+        ) : (
+          <Table columns={columns} renderRow={renderRow} data={currentCircuits} />
+        )}
 
-// //             {/* Bouton Google */}
-// //             <div className="absolute top-[475px] left-1/2 transform -translate-x-1/2 flex flex-col gap-6">
-// //               <button
-// //                 type="button"
-// //                 onClick={handleGoogleSignIn}
-// //                 className="w-[145px] h-[34px] bg-white border border-[#CCCCCC] rounded-[10px] flex items-center justify-start px-6 gap-x-3 font-montserrat-light text-[#000000] text-[13px] hover:bg-gray-50"
-// //               >
-// //                 <FcGoogle size={20} className="flex-shrink-0" />
-// //                 Google
-// //               </button>
-// //             </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
 
-// //             {/* Créer un compte */}
-// //             <div className="absolute top-[605px] left-1/2 transform -translate-x-1/2 w-[453px] text-center">
-// //               <p className="text-[#474747] text-[15px] font-montserrat-light mb-3">
-// //                 Vous n'êtes pas un membre?
-// //               </p>
-// //               <Link
-// //                 href="/sign-up"
-// //                 className="text-[#FB7822] font-montserrat-semibold text-[20px] underline underline-offset-4 hover:text-[#FB7822]"
-// //               >
-// //                 Créer un compte
-// //               </Link>
-// //             </div>
-// //           </form>
-// //         </div>
-// //       </div>
-// //     </main>
-// //   );
-// // }
+      {selectedCircuit && (
+        <ViewCircuitModal
+          circuit={selectedCircuit}
+          onClose={() => setSelectedCircuit(null)}
+        />
+      )}
+    </>
+  );
+};
 
-
-
-// "use client";
-
-// import { useState } from "react";
-// import Link from "next/link";
-// import Image from "next/image";
-// import { Eye, EyeOff } from "lucide-react";
-// import { useRouter } from "next/navigation";
-
-// export default function SignUpForm() {
-//   const router = useRouter();
-//   const [fullName, setFullName] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [confirmPassword, setConfirmPassword] = useState("");
-//   const [country, setCountry] = useState("");
-//   const [region, setRegion] = useState("");
-//   const [acceptedTerms, setAcceptedTerms] = useState(false);
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-
-//     if (password !== confirmPassword) {
-//       alert("Les mots de passe ne correspondent pas");
-//       return;
-//     }
-
-//     try {
-//       const response = await fetch("http://localhost:8000/auth/signup", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           username: fullName,
-//           email,
-//           password,
-//           country,
-//           region,
-//         }),
-//       });
-
-//       const data = await response.json();
-
-//       if (response.ok) {
-//         localStorage.setItem("token", data.token);
-//         router.push("/sign-up/verification");
-//       } else {
-//         alert(data.message || "Erreur lors de l'inscription");
-//       }
-//     } catch (error) {
-//       console.error("Erreur complète:", error);
-//       alert("Problème de connexion avec le serveur");
-//     }
-//   };
-
-//   return (
-//     <main className="min-h-screen bg-white grid grid-cols-[1fr_auto_1fr] items-stretch overflow-hidden">
-//       {/* Partie Gauche - Image */}
-//       <div className="relative border border-gray-300 backdrop-blur-sm shadow-lg rounded-r-[20px] overflow-hidden">
-//         <div className="w-full h-full relative">
-//           <Image
-//             src="/SignupImage.png"
-//             alt="Background Dourbia"
-//             layout="fill"
-//             objectFit="cover"
-//             className="w-full h-full"
-//           />
-//           <div className="absolute inset-0 bg-black/20 h-full p-8">
-//             <div className="absolute left-[164px] top-[93px]">
-//               <Image
-//                 src="/logo1.png"
-//                 alt="Logo Dourbia"
-//                 width={340}
-//                 height={210}
-//               />
-//             </div>
-//             <h1 className="absolute left-[177px] top-[380px] text-[55px] font-extrabold text-white leading-[85px]">
-//               BIENVENUE À <br />
-//               <span>DOURBIA</span>
-//             </h1>
-//           </div>
-//         </div>
-//       </div>
-//       <div className="w-20"></div>
-
-//       {/* Partie Droite - Formulaire */}
-//       <div className="relative flex justify-center items-center border border-gray-300 backdrop-blur-sm shadow-lg rounded-l-[20px] overflow-hidden">
-//         <div className="w-full max-w-md px-4 py-8 pt-8 pb-8 flex flex-col items-center">
-//           <Image
-//             src="/logo3.png"
-//             alt="Logo Dourbia"
-//             width={90}
-//             height={80}
-//             className="absolute top-[15px]"
-//           />
-
-//           <h2 className="relative top-4 text-[20px] text-[#60D8F4] mb-5 mt-10 font-actor text-center">
-//             Créer un compte
-//           </h2>
-
-
-//           <form onSubmit={handleSubmit} className="w-full space-y-1">
-            // <div className="space-y-3">
-            //   {/* Champ Nom complet */}
-            //   <div className="relative">
-            //     <input
-            //       type="text"
-            //       placeholder=""
-            //       value={fullName}
-            //       onChange={(e) => setFullName(e.target.value)}
-            //       className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-            //       required
-            //     />
-            //     {!fullName && (
-            //       <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-            //         <span className="text-[#8F8F8F] text-sm placeholder:text-[#8F8F8F] placeholder:opacity-50 text-[#8F8F8F] opacity-50 font-abeezee leading-auto">Nom et prénom</span>
-            //         <span className="text-[#FB7822] ml-1">*</span>
-            //       </div>
-            //     )}
-            //   </div>
-
-//               {/* Champ Email */}
-//               <div className="relative">
-//                 <input
-//                   type="email"
-//                   placeholder=""
-//                   value={email}
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-//                   required
-//                 />
-//                 {!email && (
-                //   <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-                //     <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Adresse e-mail</span>
-                //     <span className="text-[#FB7822] ml-1">*</span>
-                //   </div>
-//                 )}
-//               </div>
-
-//               {/* Champ Mot de passe */}
-//               <div className="relative">
-//                 <input
-//                   type={showPassword ? "text" : "password"}
-//                   placeholder=""
-//                   value={password}
-//                   onChange={(e) => setPassword(e.target.value)}
-//                   className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 pr-10 focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-//                   required
-//                 />
-//                 {!password && (
-//                   <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-//                     <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Mot de passe</span>
-//                     <span className="text-[#FB7822] ml-1">*</span>
-//                   </div>
-//                 )}
-//                 <button
-//                   type="button"
-//                   onClick={() => setShowPassword(!showPassword)}
-//                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-//                 >
-//                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-//                 </button>
-//               </div>
-
-//               {/* Champ Confirmation Mot de passe */}
-//               <div className="relative">
-//                 <input
-//                   type={showConfirmPassword ? "text" : "password"}
-//                   placeholder=""
-//                   value={confirmPassword}
-//                   onChange={(e) => setConfirmPassword(e.target.value)}
-//                   className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 pr-10 focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-//                   required
-//                 />
-//                 {!confirmPassword && (
-//                   <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-//                     <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Confirmer mot de passe</span>
-//                     <span className="text-[#FB7822] ml-1">*</span>
-//                   </div>
-//                 )}
-//                 <button
-//                   type="button"
-//                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-//                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-//                 >
-//                   {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-//                 </button>
-//               </div>
-
-//               {/* Champ Pays */}
-//               <div className="relative">
-//                 <input
-//                   type="text"
-//                   placeholder=""
-//                   value={country}
-//                   onChange={(e) => setCountry(e.target.value)}
-//                   className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-//                   required
-//                 />
-//                 {!country && (
-//                   <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-//                     <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Pays</span>
-
-//                   </div>
-//                 )}
-//               </div>
-
-//               {/* Champ Région */}
-//               <div className="relative mb-[20px]"> {/* Ajout d'un margin-bottom pour l'espacement */}
-//                 <input
-//                   type="text"
-//                   placeholder=""
-//                   value={region}
-//                   onChange={(e) => setRegion(e.target.value)}
-//                   className="w-[453px] h-[40px] bg-transparent border-none shadow-md rounded-[15px] px-4 py-2.5 
-//       focus:border-[#8F8F8F] outline-none text-sm text-[#8F8F8F] opacity-50 font-abeezee leading-auto"
-//                   required
-//                 />
-//                 {!region && (
-//                   <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-//                     <span className="text-[#8F8F8F] text-sm opacity-50 font-abeezee">Région</span>
-//                   </div>
-//                 )}
-//               </div>
-
-// {/* Checkbox Conditions */}
-// <div className="flex items-center gap-2 mt-[60px] ml-[40px]">
-//   <input
-//     type="checkbox"
-//     checked={acceptedTerms}
-//     onChange={(e) => setAcceptedTerms(e.target.checked)}
-//     className="h-[25px] w-[25px] border-[2px] border-[#777272] rounded-md 
-//                text-blue-500 focus:ring-0 checked:bg-[#5ED8F2] checked:border-[#5ED8F2] 
-//                checked:after:content-['✔'] checked:after:text-white 
-//                checked:after:flex checked:after:items-center checked:after:justify-center
-//                checked:after:h-full checked:after:w-full checked:after:font-bold text-center"
-//     id="terms"
-//     required
-//   />
-//   <label htmlFor="terms" className="text-[15px] font-actor text-[#777272] leading-[1.5] mt-[-10px]">
-//     J'accepte les{" "}
-//     <Link href="#" className="text-[#FB7822] underline underline-offset-4">
-//       conditions d'utilisation
-//     </Link>{" "}
-//     de Dourbia
-//   </label>
-// </div>
-
-//             </div>
-
-
-//             {/* Bouton d'inscription */}
-//             <div className="flex flex-col justify-center items-center mx-auto mt-12">
-//               <button
-//                 type="submit"
-//                 className="w-[200px] h-[37px] bg-[#5ED8F2] text-white rounded-[15px] py-3 text-m opacity-100 hover:bg-[#4AC0D8] font-actor flex justify-center items-center"
-//               >
-//                 S'inscrire
-//               </button>
-//             </div>
-
-//             {/* Lien de connexion */}
-//             <div className="flex justify-center mt-13">
-//               <Link
-//                 href="/sign-in"
-//                 className="text-[#002863] underline text-[17px] font-montserrat-light underline-offset-3"
-//               >
-//                 Vous avez déjà un compte?
-//               </Link>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-//     </main>
-//   );
-// }
+export default CircuitsList;
