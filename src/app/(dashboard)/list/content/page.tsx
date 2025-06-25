@@ -1,76 +1,108 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import FormModal from "@/components/Modal/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import FormModal from "@/components/Modal/FormModal";
 
-type Contenu = {
+type Contribution = {
   id: number;
-  type: string;
-  description: string;
-  monument_id: number; // Id du monument auquel ce contenu appartient
+  text?: string;
+  fileUrl?: string;
+  fileType?: "image" | "video" | "pdf" | string;
+  monument: {
+    id: number;
+    nom_monument_FR: string;
+  };
+  user: {
+    id: number;
+    username: string;
+  };
+  createdAt: string;
 };
 
 const columns = [
-  { header: "Type", accessor: "type" },
-  { header: "Description", accessor: "description", className: "hidden md:table-cell" },
-  { header: "Monument ID", accessor: "monument_id" },
+  { header: "Monument", accessor: "monument" },
+  { header: "Texte", accessor: "text", className: "hidden md:table-cell" },
+  { header: "Fichier", accessor: "file", className: "hidden md:table-cell" },
+  { header: "Utilisateur", accessor: "user" },
+  { header: "Date", accessor: "createdAt", className: "hidden lg:table-cell" },
   { header: "Actions", accessor: "action" },
 ];
 
-const ContenusList = () => {
-  const [contenus, setContenus] = useState<Contenu[]>([]);
+const ContributionsList = () => {
+  const [contributions, setContributions] = useState<Contribution[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const fetchContenus = async () => {
+  const fetchContributions = async () => {
     try {
-      const response = await fetch('http://localhost:8000/contenus/getAll', {
-        method: 'GET',
+      const res = await fetch("http://localhost:8000/contributions/getAll", {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        credentials: 'include',
       });
-      if (response.ok) {
-        const data = await response.json();
-        const sortedData = [...data].sort((a, b) => a.id - b.id);
-        setContenus(sortedData);
+      if (res.ok) {
+        const data = await res.json();
+        setContributions(data);
       } else {
-        console.error('Failed to fetch contenus');
+        console.error("Erreur lors du chargement des contributions");
       }
-    } catch (error) {
-      console.error('Error fetching contenus:', error);
+    } catch (err) {
+      console.error("Erreur:", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchContenus();
+    fetchContributions();
   }, []);
 
-  const indexOfLastContenu = currentPage * itemsPerPage;
-  const indexOfFirstContenu = indexOfLastContenu - itemsPerPage;
-  const currentContenus = contenus.slice(indexOfFirstContenu, indexOfLastContenu);
-  const totalPages = Math.ceil(contenus.length / itemsPerPage);
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const currentItems = contributions.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(contributions.length / itemsPerPage);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
+  const handlePageChange = (page: number) => setCurrentPage(page);
 
-  const renderRow = (item: Contenu) => {
+  const renderRow = (item: Contribution) => {
+    const filePreview = () => {
+      const baseUrl = "http://localhost:8000/uploads/contributions/";
+      if (!item.fileUrl) return "—";
+      const url = baseUrl + item.fileUrl;
+
+      switch (item.fileType) {
+        case "image":
+          return <img src={url} alt="img" className="h-10 w-auto rounded" />;
+        case "video":
+          return <video src={url} className="h-10" controls />;
+        case "pdf":
+          return (
+            <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+              Voir PDF
+            </a>
+          );
+        default:
+          return <a href={url}>Télécharger</a>;
+      }
+    };
+
     return (
       <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-[#EBF2F6]">
-        <td className="p-4">{item.type}</td>
-        <td className="hidden md:table-cell p-4">{item.description}</td>
-        <td className="p-4">{item.monument_id}</td>
+        <td className="p-4">{item.monument?.nom_monument_FR || "—"}</td>
+        <td className="hidden md:table-cell p-4">{item.text || "—"}</td>
+        <td className="hidden md:table-cell p-4">{filePreview()}</td>
+        <td className="p-4">{item.user?.username || "—"}</td>
+        <td className="hidden lg:table-cell p-4">
+          {new Date(item.createdAt).toLocaleDateString()}
+        </td>
         <td className="p-4">
           <div className="flex items-center gap-2">
-            <FormModal table="content" type="edit" id={item.id} data={item} onSuccess={fetchContenus} />
-            <FormModal table="content" type="delete" id={item.id} onSuccess={fetchContenus} />
+            <FormModal table="content" type="edit" id={item.id} data={item} onSuccess={fetchContributions} />
+            <FormModal table="content" type="delete" id={item.id} onSuccess={fetchContributions} />
           </div>
         </td>
       </tr>
@@ -78,35 +110,24 @@ const ContenusList = () => {
   };
 
   return (
-    <>
-      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-        {/* TOP */}
-        <div className="flex items-center justify-between">
-          <h1 className="hidden md:block text-lg font-semibold">Tous les contenus</h1>
-          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-            <TableSearch />
-            <div className="flex items-center gap-4 self-end">
-              <FormModal table="content" type="create" onSuccess={fetchContenus} />
-            </div>
-          </div>
+    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg font-semibold">Contributions des utilisateurs</h1>
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+          <TableSearch />
+          <FormModal table="content" type="create" onSuccess={fetchContributions} />
         </div>
-
-        {/* LIST */}
-        {loading ? (
-          <div>Chargement...</div>
-        ) : (
-          <Table columns={columns} renderRow={renderRow} data={currentContenus} />
-        )}
-
-        {/* PAGINATION */}
-        <Pagination 
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
       </div>
-    </>
+
+      {loading ? (
+        <div>Chargement...</div>
+      ) : (
+        <Table columns={columns} renderRow={renderRow} data={currentItems} />
+      )}
+
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+    </div>
   );
 };
 
-export default ContenusList;
+export default ContributionsList;

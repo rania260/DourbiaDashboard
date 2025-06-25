@@ -45,7 +45,9 @@ export default function SignUpForm() {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.token);
+        if (data.accessToken) {
+          localStorage.setItem("token", data.accessToken);
+        }
         router.push("/sign-up/verification");
       } else {
         alert(data.message || "Erreur lors de l'inscription");

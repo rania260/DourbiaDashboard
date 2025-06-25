@@ -12,7 +12,10 @@ export const api = {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000${url}`, options);
+      const response = await fetch(`http://localhost:8000${url}`, {
+        ...options,
+        credentials: 'include', // Toujours inclure les cookies (access_token)
+      });
       
       // Si on reçoit une erreur 401, on essaie de rafraîchir le token
       if (response.status === 401) {

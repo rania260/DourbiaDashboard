@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc"; // Google Auth import
 import "../style/login.css";
 import { useAuth } from "../app/context/auth-context";
 
@@ -19,12 +19,48 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, login, setToken } = useAuth();
 
-  const handleGoogleSignIn = () => {
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     // Redirect to Google OAuth page with return URL
+  //     const returnTo = encodeURIComponent('http://localhost:3000/admin');
+  //     window.location.href = `http://localhost:8000/auth/google/login?returnTo=${returnTo}`;
+  //   } catch (error) {
+  //     console.error('Google sign-in error:', error);
+  //     setErrorMessage('Erreur lors de la connexion avec Google');
+  //   }
+  // };
 
-    window.location.href = 'http://localhost:8000/auth/google';
-  };
+  // // Handle the callback from the backend
+  // useEffect(() => {
+  //   // Gestion du callback Google : extraction du token depuis le hash de l'URL
+  //   const hash = typeof window !== 'undefined' ? window.location.hash : '';
+  //   if (hash && hash.startsWith('#token=')) {
+  //     const token = hash.replace('#token=', '');
+  //     if (token) {
+  //       localStorage.setItem('token', token);
+  //       // Nettoie le hash de l'URL
+  //       window.history.replaceState(null, '', window.location.pathname);
+  //       // Fetch le profil et met à jour le contexte
+  //       (async () => {
+  //         try {
+  //           const response = await fetch('http://localhost:8000/auth/profile', {
+  //             headers: { 'Authorization': `Bearer ${token}` }
+  //           });
+  //           if (!response.ok) throw new Error('Failed to fetch user profile');
+  //           const userData = await response.json();
+  //           login(userData, token);
+  //           setToken(token);
+  //           router.push('/admin');
+  //         } catch (error) {
+  //           setErrorMessage('Erreur lors du traitement de la connexion');
+  //           localStorage.removeItem('token');
+  //         }
+  //       })();
+  //     }
+  //   }
+  // }, [router]);
   // Effet pour afficher le message de succès
   useEffect(() => {
     if (success) {
@@ -45,7 +81,6 @@ export default function SignInForm() {
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
-        credentials: 'include', // Important pour les cookies
         body: JSON.stringify({
           email: email.trim(),
           password: password
@@ -55,12 +90,11 @@ export default function SignInForm() {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem("token", data.accessToken);
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("isLoggedIn", "true");
-
         // Update auth context
-        setIsLoggedIn(true);
-
+        login(data.user, data.accessToken);
         router.push("/admin");
       } else {
         setErrorMessage(data.message || "Identifiants incorrects. Veuillez réessayer.");
@@ -198,14 +232,14 @@ export default function SignInForm() {
               <div className="separator-line"></div>
             </div>
             {/* Bouton Google */}
-            <button
+            {/* <button
               type="button"
               onClick={handleGoogleSignIn}
               className="google-button"
             >
               <FcGoogle size={20} />
               Google
-            </button>
+            </button> */}
 
             {/* Créer un compte */}
             <div className="createaccount">

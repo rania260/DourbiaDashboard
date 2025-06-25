@@ -17,6 +17,10 @@ type User = {
   country: string;
   emailVerifiedAt?: string;
   isBanned: boolean;
+  types?: string[];
+  description?: string;
+  regions?: string[];
+  services?: string[];
 };
 
 const columns = [
@@ -75,29 +79,54 @@ const [isSearching, setIsSearching] = useState(false);
 
   const fetchUsers = async () => {
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
       const response = await fetch('http://localhost:8000/auth/getAll', {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        credentials: 'include',
+        
       });
-      if (response.ok) {
-        const data = await response.json();
-        // Ajout d'un identifiant unique si id est manquant
-        const usersWithUniqueIds = data.map((user: User, index: number) => ({
-          ...user,
-          uniqueId: user.id ? user.id.toString() : `temp-${index}-${Date.now()}`
-        }));
-        const sortedData = [...usersWithUniqueIds].sort((a, b) => parseInt(a.uniqueId) - parseInt(b.uniqueId));
-        setUsers(sortedData);
-      } else {
-        console.error('Failed to fetch users');
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        if (response.status === 401) {
+          // Token invalide ou expiré
+          localStorage.removeItem('token');
+          throw new Error('Session expirée. Veuillez vous reconnecter.');
+        }
+        throw new Error(errorData?.message || 'Failed to fetch users');
       }
+
+      const data = await response.json();
+      
+      // Ajout d'un identifiant unique si id est manquant
+      const usersWithUniqueIds = data.map((user: User, index: number) => ({
+        ...user,
+        uniqueId: user.id ? user.id.toString() : `temp-${index}-${Date.now()}`
+      }));
+      
+      // Filtrer les utilisateurs selon les rôles autorisés
+      const allowedRoles = ['USER', 'SUPERADMIN', 'ADMIN'];
+      const filteredUsers = usersWithUniqueIds.filter((user: User) => 
+        allowedRoles.includes(user.role)
+      );
+      
+      const sortedData = [...filteredUsers].sort((a, b) => parseInt(a.uniqueId) - parseInt(b.uniqueId));
+      setUsers(sortedData);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching users:', error);
-    } finally {
+      setUsers([]);
       setLoading(false);
+      // Vous pouvez afficher un message d'erreur à l'utilisateur ici
+      console.error('Error details:', error);
     }
   };
 

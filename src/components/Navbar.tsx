@@ -2,9 +2,32 @@
 'use client';
 import Image from "next/image";
 import { useAuth } from '../app/context/auth-context';
+import { useEffect } from 'react';
+
+function getUserFromLocalStorage() {
+  try {
+    const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+    if (!userStr) return {};
+    return JSON.parse(userStr);
+  } catch {
+    return {};
+  }
+}
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, fetchProfile, token } = useAuth();
+
+  // Si user est null mais token existe, tente de recharger le profil
+  useEffect(() => {
+    if (!user && token) {
+      fetchProfile();
+    }
+  }, [user, token, fetchProfile]);
+
+  // Fallback localStorage si jamais user reste null
+  const localUser = getUserFromLocalStorage();
+  const username = user?.username || localUser.username || 'Invité';
+  const role = user?.role || localUser.role || 'Utilisateur';
 
   return (
     <div className='flex items-center justify-between p-4'>

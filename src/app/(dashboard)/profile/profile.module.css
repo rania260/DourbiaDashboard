@@ -66,6 +66,49 @@
   display: none;
 }
 
+.profileInfo {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.infoContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.infoLabel {
+  color: #777272;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.infoValue {
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.infoValue.empty {
+  color: #8F8F8F;
+  font-style: italic;
+}
+
 .formInput {
   width: 100%;
   height: 2.875rem;

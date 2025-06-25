@@ -3,7 +3,11 @@
 import { useState } from 'react';
 import styles from './profile.module.css';
 
+import { useEffect } from 'react';
+import { useAuth } from '@/app/context/auth-context';
+
 export default function ProfilePage() {
+  const { user, fetchProfile } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,6 +21,22 @@ export default function ProfilePage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  useEffect(() => {
+    if (!user) {
+      fetchProfile();
+    } else {
+      setFormData({
+        name: user.username || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        country: user.country || '',
+        region: user.region || '',
+        password: '',
+        confirmPassword: ''
+      });
+    }
+  }, [user, fetchProfile]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -25,13 +45,33 @@ export default function ProfilePage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("Les mots de passe ne correspondent pas!");
       return;
     }
-    alert("Profil mis à jour avec succès!");
+
+    try {
+      const response = await fetch('http://localhost:8000/auth/update/' + user?.id, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        alert("Profil mis à jour avec succès!");
+        fetchProfile();
+      } else {
+        alert("Erreur lors de la mise à jour du profil");
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert("Erreur lors de la mise à jour du profil");
+    }
   };
 
   return (
@@ -64,8 +104,7 @@ export default function ProfilePage() {
                     </defs>
                   </svg>
                 </label>
-              </div>
-              <h1 className={styles.formTitle}>Changer la photo de profil</h1>
+              </div> 
             </div>
           </div>
 
@@ -78,6 +117,7 @@ export default function ProfilePage() {
               className={styles.formInput}
               placeholder="Nom et prénom"
               required
+              disabled={user?.username === formData.name}
             />
           </div>
 
@@ -90,6 +130,7 @@ export default function ProfilePage() {
               className={styles.formInput}
               placeholder="Adresse e-mail"
               required
+              disabled={user?.email === formData.email}
             />
           </div>
 

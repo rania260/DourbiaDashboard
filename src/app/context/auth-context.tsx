@@ -1,34 +1,3 @@
-// 'use client';
-
-// import { createContext, useState, useEffect, useContext } from 'react';
-
-// type AuthContextType = {
-//   isLoggedIn: boolean;
-//   setIsLoggedIn: (val: boolean) => void;
-// };
-
-// export const AuthContext = createContext<AuthContextType>({
-//   isLoggedIn: false,
-//   setIsLoggedIn: () => {},
-// });
-
-// export const useAuth = () => useContext(AuthContext);
-
-// export function AuthProvider({ children }: { children: React.ReactNode }) {
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-//   useEffect(() => {
-//     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-//     setIsLoggedIn(loggedIn);
-//   }, []);
-
-//   return (
-//     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// }
-// auth-context.ts
 'use client';
 
 import { createContext, useState, useEffect, useContext } from 'react';
@@ -38,6 +7,10 @@ type User = {
   username?: string;
   email?: string;
   role?: string;
+  token?: string;
+  phone?: string;
+  country?: string;
+  region?: string;
 };
 
 type AuthContextType = {
@@ -45,8 +18,11 @@ type AuthContextType = {
   user: User | null;
   setIsLoggedIn: (val: boolean) => void;
   setUser: (user: User | null) => void;
-  login: (userData: User) => void;
+  login: (userData: User, token: string) => void;
   logout: () => void;
+  token: string | null;
+  setToken: (token: string | null) => void;
+  fetchProfile: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
@@ -56,6 +32,9 @@ export const AuthContext = createContext<AuthContextType>({
   setUser: () => {},
   login: () => {},
   logout: () => {},
+  token: null,
+  setToken: () => {},
+  fetchProfile: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -63,30 +42,61 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  const login = (userData: User) => {
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('user', JSON.stringify(userData));
+  const login = (userData: User, token: string) => {
     setIsLoggedIn(true);
     setUser(userData);
+    setToken(token);
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', token);
+    localStorage.setItem('isLoggedIn', 'true');
+          
   };
 
   const logout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
     setIsLoggedIn(false);
     setUser(null);
+    setToken(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('isLoggedIn');
   };
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const userData = localStorage.getItem('user');
-    
-    setIsLoggedIn(loggedIn);
-    if (userData) {
-      setUser(JSON.parse(userData));
+const fetchProfile = async () => {
+  try {
+    const jwt = token || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
+    if (!jwt) return;
+    const response = await fetch('http://localhost:8000/auth/profile', {
+      headers: {
+        'Authorization': `Bearer ${jwt}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+    if (response.ok) {
+      const userData = await response.json();
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
     }
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+  }
+};
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+      setIsLoggedIn(true);
+    }
+   else {
+    setIsLoggedIn(false);
+    setUser(null);
+    setToken(null);
+  };
   }, []);
+
 
   return (
     <AuthContext.Provider value={{ 
@@ -95,7 +105,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoggedIn, 
       setUser,
       login,
-      logout
+      logout,
+      token,
+      setToken,
+      fetchProfile
     }}>
       {children}
     </AuthContext.Provider>
